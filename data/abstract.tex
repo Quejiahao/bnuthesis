@@ -1,0 +1,36 @@
+% !TeX root = ../bnuthesis-example.tex
+
+% 中英文摘要和关键字
+
+\begin{abstract}
+  摘要是对论文内容不加注释和评论的简明归纳，应包括研究工作的目的、方法和结论，重点是结果和结论。用语要规范，一般不用公式和非规范符号术语，不出现图、表、化学结构式等。采用第三人称撰写，一般在 300 字左右。
+
+  论文应附有英文题目和英文摘要以便于进行国际交流。英文题目和英文摘要应明确、简练，其内容包括研究目的、方法、主要结果和结论。一般不宜超过 250 个实词。
+
+  关键词是为了满足文献标引或检索工作的需要而从论文中选取出的用以表示全文主题内容信息的词或词组。关键词包括主题和自由词：主题词是专门为文献的标引或检索而从自然语言的主要词汇中挑选出来并加以规范化了的词或词组；自由词则是未规范化的即还未收入主题词表中的词或词组。
+
+  每篇论文中应列出 $3 \sim 8$ 个关键词，它们应能反映论文的主题内容。其中主题词应尽可能多一些，关键词作为论文的一个组成部分，列于摘要段之后。还应列出与中文对应的英文关键词（Keywords）。关键词间空格 1 个字符。
+
+  % 关键词用“英文逗号”分隔，输出时会自动处理为正确的分隔符
+  \bnusetup{
+    keywords = {关键词 1, 关键词 2, 关键词 3, 关键词 4, 关键词 5},
+  }
+\end{abstract}
+
+\begin{abstract*}
+  An abstract of a dissertation is a summary and extraction of research work and contributions.
+  Included in an abstract should be description of research topic and research objective, brief introduction to methodology and research process, and summarization of conclusion and contributions of the research.
+  An abstract should be characterized by independence and clarity and carry identical information with the dissertation.
+  It should be such that the general idea and major contributions of the dissertation are conveyed without reading the dissertation.
+
+  An abstract should be concise and to the point.
+  It is a misunderstanding to make an abstract an outline of the dissertation and words “the first chapter”, “the second chapter” and the like should be avoided in the abstract.
+
+  Keywords are terms used in a dissertation for indexing, reflecting core information of the dissertation.
+  An abstract may contain a maximum of 5 keywords, with semi-colons used in between to separate one another.
+
+  % Use comma as seperator when inputting
+  \bnusetup{
+    keywords* = {keyword 1, keyword 2, keyword 3, keyword 4, keyword 5},
+  }
+\end{abstract*}
