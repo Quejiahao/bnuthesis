@@ -294,3 +294,6 @@ TSWLatexianTemp*
 
 # standalone packages
 *.sta
+
+# my own thesis
+main*

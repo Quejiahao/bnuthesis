@@ -1938,7 +1938,7 @@
     \def\indexname{索引}%
     \def\bnu@resolution@name{答辩委员会决议书}%
     \ifbnu@degree@bachelor
-      \def\contentsname{目\qquad 录}%
+      \def\contentsname{目\quad 录}%
       \def\listfigurename{插图索引}%
       \def\listtablename{表格索引}%
       \def\bnu@list@figure@table@name{插图和附表索引}%
@@ -3793,7 +3793,7 @@
   \ifbnu@degree@graduate
     \bnu@chapter*{\contentsname}%
   \else
-    \bnu@chapter*[]{\texorpdfstring{\contentsname}{}}%
+    \bnu@chapter*[]{\contentsname}%
   \fi
   \@starttoc{toc}%
 }
@@ -5027,7 +5027,7 @@
             afterskip  = 35.6bp,
           }
         }%
-        \bnu@chapter{\texorpdfstring{\bnu@abstract@name}{}}%
+        \bnu@chapter{\bnu@abstract@name}%
       \endgroup
       \sihao
     \else

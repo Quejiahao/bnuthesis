@@ -1,3 +1,5 @@
+修改自 [**ThuThesis**](https://github.com/tuna/thuthesis/commit/1971191972d5cbe826a4d208539465e33f01927d)，以下是原始 README，**使用时需要将 thu 改为 bnu**.
+
 [![Actions Status](https://github.com/tuna/thuthesis/workflows/Test/badge.svg)](https://github.com/tuna/thuthesis/actions)
 [![GitHub downloads](https://img.shields.io/github/downloads/tuna/thuthesis/total)](https://github.com/tuna/thuthesis/releases)
 [![GitHub commits](https://img.shields.io/github/commits-since/tuna/thuthesis/latest)](https://github.com/tuna/thuthesis/commits/master)
