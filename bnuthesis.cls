@@ -534,11 +534,11 @@
     \def\bnu@corollary@name{推论}%
     \def\bnu@exercise@name{练习}%
     \def\bnu@example@name{例}%
-    \def\bnu@remark@name{注释}%
+    \def\bnu@remark@name{注}%
     \def\bnu@problem@name{问题}%
     \def\bnu@conjecture@name{猜想}%
     \def\bnu@proof@name{证明}%
-    \def\bnu@theorem@separator{：}%
+    \def\bnu@theorem@separator{: }%
   \else
     \ifbnu@language@english
       \ctexset{
@@ -2795,7 +2795,6 @@
       },
     }%
     \bnu@chapter*[]{北京师范大学本科生毕业论文（设计）诚信承诺书}%
-    \thispagestyle{empty}%
     \xiaosi[1.95]
     本人郑重声明：%
     所呈交的毕业论文（设计），是本人在导师的指导下，独立进行研究工作所取得的成果。%
@@ -2833,6 +2832,7 @@
     \null\par
     导师签名：\hfill 年\hspace{3ex} 月\hspace{3ex} 日\par
   \endgroup
+  \thispagestyle{empty}%
 }
 \bnu@define@key{
   keywords,
@@ -2985,7 +2985,7 @@
   \ifbnu@degree@bachelor
     \clearpage
   \fi
-  \bnu@chapter*{\texorpdfstring{\bnu@acknowledgements@name}{}}%
+  \bnu@chapter*{\bnu@acknowledgements@name}%
   \xiaosi
 }{%
   \ifbnu@degree@bachelor
