@@ -14,7 +14,7 @@
 %
 % \iffalse
 %<*driver>
-\ProvidesFile{bnuthesis.dtx}[2021/03/23 0.0.1 Beijing Normal University Thesis Template]
+\ProvidesFile{bnuthesis.dtx}[2021/05/13 0.0.2 Beijing Normal University Thesis Template]
 \documentclass{ltxdoc}
 \usepackage{dtx-style}
 
@@ -1247,9 +1247,9 @@
 %
 % \subsection{基本信息}
 %    \begin{macrocode}
-%<cls>\NeedsTeXFormat{LaTeX2e}[2020/02/02]
+%<cls>\NeedsTeXFormat{LaTeX2e}[2020/10/01]
 %<cls>\ProvidesClass{bnuthesis}
-%<cls>[2021/03/23 0.0.1 Beijing Normal University Thesis Template]
+%<cls>[2021/05/13 0.0.2 Beijing Normal University Thesis Template]
 %    \end{macrocode}
 %
 % 报错
@@ -1305,7 +1305,7 @@
 %<*cls>
 \hyphenation{Bnu-Thesis}
 \def\bnuthesis{BnuThesis}
-\def\version{0.0.1}
+\def\version{0.0.2}
 \RequirePackage{kvdefinekeys}
 \RequirePackage{kvsetkeys}
 \RequirePackage{kvoptions}
@@ -3808,20 +3808,20 @@
     default = times,
   },
 }
-\newcommand\bnu@leaders{\titlerule*{…}}
+\newcommand\bnu@leaders{\titlerule*{$\cdot$}}
 \newcommand\bnu@set@toc@format{%
   \contentsmargin{\z@}%
 %    \end{macrocode}
 %
 % 本科生：
-% 目录从第 1 章开始，每章标题用黑体三号字，行间距为 20pt，
+% 每章标题用黑体三号字，行间距为 20pt，
 % 行前空 6pt，行后空 0pt。
 % 每条标题用黑体小三号字，行间距为 20pt。
 % 每款标题用黑体四号字，行间距为 20pt。
 % 每项标题用黑体小四号字，行间距为 20pt。
 %
 % 注意示例中章标题的字母和数字是衬线体，所以这里用 \cs{heiti}。
-% 示例中的一级和二级节标题分别缩进 1 和 1.5 个汉字符。
+% 示例中的一级、二级和三级节标题分别缩进 1, 1.5 和 2 个汉字符。
 %    \begin{macrocode}
   \ifbnu@degree@bachelor
     \ifbnu@main@language@chinese
@@ -5020,11 +5020,11 @@
   \else
     \ifbnu@degree@bachelor
       \begingroup
-        {\centering\bfseries\sffamily\sanhao\bnu@title\par}%
+        {\centering\bfseries\heiti\sanhao\bnu@title\par}%
         \ctexset{%
           chapter = {
             break   = {},
-            format  = {\centering\bfseries\sffamily\xiaosan},
+            format  = {\centering\bfseries\heiti\xiaosan},
             afterskip  = 35.6bp,
           }
         }%
@@ -6266,7 +6266,7 @@
   \newtheoremstyle{bnu}
     {\z@}{\z@}
     {\normalfont}{\z@}
-    {\normalfont\sffamily}{\bnu@theorem@separator}
+    {\normalfont\heiti}{\bnu@theorem@separator}
     {0.5em}{}
   \theoremstyle{bnu}
   \newtheorem{assumption}{\bnu@assumption@name}[chapter]%
@@ -6304,7 +6304,7 @@
 %    \begin{macrocode}
 \AtEndOfPackageFile*{ntheorem}{%
   \theorembodyfont{\normalfont}%
-  \theoremheaderfont{\normalfont\sffamily}%
+  \theoremheaderfont{\normalfont\heiti}%
   \theoremsymbol{\bnu@qed}%
   \newtheorem*{proof}{\bnu@proof@name}%
   \theoremstyle{plain}%

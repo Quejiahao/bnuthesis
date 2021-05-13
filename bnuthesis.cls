@@ -21,9 +21,9 @@
 %% To produce the documentation run the original source files ending with `.dtx'
 %% through LaTeX.
 %% 
-\NeedsTeXFormat{LaTeX2e}[2020/02/02]
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \ProvidesClass{bnuthesis}
-[2021/03/23 0.0.1 Beijing Normal University Thesis Template]
+[2021/05/13 0.0.2 Beijing Normal University Thesis Template]
 \newcommand\bnu@error[1]{%
   \ClassError{bnuthesis}{#1}{}%
 }
@@ -56,7 +56,7 @@
 }
 \hyphenation{Bnu-Thesis}
 \def\bnuthesis{BnuThesis}
-\def\version{0.0.1}
+\def\version{0.0.2}
 \RequirePackage{kvdefinekeys}
 \RequirePackage{kvsetkeys}
 \RequirePackage{kvoptions}
@@ -1696,22 +1696,22 @@
   \ifbnu@degree@bachelor
     \ctexset{%
       chapter = {
-        format     = \centering\sffamily\fontsize{16bp}{20bp}\selectfont,
+        format     = \centering\heiti\bfseries\fontsize{16bp}{20bp}\selectfont,
         beforeskip = 0.5\baselineskip,
         afterskip  = 0.5\baselineskip,
       },
       section = {
-        format     = \sffamily\fontsize{15bp}{20bp}\selectfont,
+        format     = \heiti\bfseries\fontsize{15bp}{20bp}\selectfont,
         beforeskip = 0.5\baselineskip,
         afterskip  = 0.5\baselineskip,
       },
       subsection = {
-        format     = \sffamily\fontsize{14bp}{20bp}\selectfont,
+        format     = \heiti\bfseries\fontsize{14bp}{20bp}\selectfont,
         beforeskip = 0.5\baselineskip,
         afterskip  = 0.5\baselineskip,
       },
       subsubsection = {
-        format     = \sffamily\fontsize{12bp}{20bp}\selectfont,
+        format     = \heiti\bfseries\fontsize{12bp}{20bp}\selectfont,
         beforeskip = 0.5\baselineskip,
         afterskip  = 0.5\baselineskip,
       },
@@ -1870,13 +1870,13 @@
     default = times,
   },
 }
-\newcommand\bnu@leaders{\titlerule*[4bp]{…}}
+\newcommand\bnu@leaders{\titlerule*{$\cdot$}}
 \newcommand\bnu@set@toc@format{%
   \contentsmargin{\z@}%
   \ifbnu@degree@bachelor
     \ifbnu@main@language@chinese
       \titlecontents{chapter}
-        [\z@]{\addvspace{6bp}
+        [\z@]{\addvspace{6bp}\zihao{3}
           \ifbnu@toc@chapter@style@arial
             \sffamily
           \else
@@ -1886,15 +1886,15 @@
         {\contentspush{\thecontentslabel\quad}}{}
         {\rmfamily\bnu@leaders\thecontentspage}%
       \titlecontents{section}
-        [1em]{\heiti}
+        [1em]{\zihao{-3}\heiti}
         {\contentspush{\thecontentslabel\quad}}{}
         {\bnu@leaders\thecontentspage}%
       \titlecontents{subsection}
-        [1.5em]{\heiti}
+        [1.5em]{\zihao{4}\heiti}
         {\contentspush{\thecontentslabel\quad}}{}
         {\bnu@leaders\thecontentspage}%
       \titlecontents{subsubsection}
-        [2em]{\heiti}
+        [2em]{\zihao{-4}\heiti}
         {\contentspush{\thecontentslabel\quad}}{}
         {\bnu@leaders\thecontentspage}%
     \else
@@ -2869,11 +2869,11 @@
   \else
     \ifbnu@degree@bachelor
       \begingroup
-        {\centering\bfseries\sffamily\sanhao\bnu@title\par}%
+        {\centering\bfseries\heiti\sanhao\bnu@title\par}%
         \ctexset{%
           chapter = {
             break   = {},
-            format  = {\centering\bfseries\sffamily\xiaosan},
+            format  = {\centering\bfseries\heiti\xiaosan},
             afterskip  = 35.6bp,
           }
         }%
@@ -2893,11 +2893,11 @@
   \else
     \heiti\textbf{关键词：}%
   \fi
-  %\ifbnu@degree@bachelor
-  %  \bnu@clist@use{\bnu@keywords}{\hspace{\ccwd}}%
-  %\else
+  \ifbnu@degree@bachelor
+    \songti\bnu@clist@use{\bnu@keywords}{\quad}%
+  \else
     \bnu@clist@use{\bnu@keywords}{；}%
-  %\fi
+  \fi
   \ifbnu@degree@bachelor
     \clearpage
   \fi
@@ -2941,7 +2941,11 @@
     \textbf{Keywords:}%
   \fi
   \space
-  \bnu@clist@use{\bnu@keywords@en}{; }%
+  \ifbnu@degree@bachelor
+    \bnu@clist@use{\bnu@keywords@en}{\quad}%
+  \else
+    \bnu@clist@use{\bnu@keywords@en}{; }%
+  \fi
   \ifbnu@degree@graduate
     \vspace*{\stretch{1}}%
   \fi
@@ -3778,7 +3782,7 @@
   \newtheoremstyle{bnu}
     {\z@}{\z@}
     {\normalfont}{\z@}
-    {\normalfont\sffamily}{\bnu@theorem@separator}
+    {\normalfont\heiti}{\bnu@theorem@separator}
     {0.5em}{}
   \theoremstyle{bnu}
   \newtheorem{assumption}{\bnu@assumption@name}[chapter]%
@@ -3810,7 +3814,7 @@
 }
 \AtEndOfPackageFile*{ntheorem}{%
   \theorembodyfont{\normalfont}%
-  \theoremheaderfont{\normalfont\sffamily}%
+  \theoremheaderfont{\normalfont\heiti}%
   \theoremsymbol{\bnu@qed}%
   \newtheorem*{proof}{\bnu@proof@name}%
   \theoremstyle{plain}%

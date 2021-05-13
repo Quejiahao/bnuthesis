@@ -16,7 +16,13 @@
             "tools": [
                 "make-thesis"
             ]
-        }
+        },
+        {
+            "name": "latexmk for bnuthesis doc",
+            "tools": [
+                "latexmk-xelatex-bnuthesis"
+            ]
+        },
     ],
     "latex-workshop.latex.tools": [
         {
@@ -43,6 +49,22 @@
                 "-pvc-",
                 "-outdir=%OUTDIR%",
                 "%DOC%"
+            ],
+            "env": {}
+        },
+        {
+            "name": "latexmk-xelatex-bnuthesis",
+            "command": "latexmk",
+            "args": [
+                "-xelatex",
+                "-file-line-error",
+                "-halt-on-error",
+                "-interaction=nonstopmode",
+                "-synctex=1",
+                "-pv-",
+                "-pvc-",
+                "-outdir=%OUTDIR%",
+                "bnuthesis.dtx"
             ],
             "env": {}
         },
