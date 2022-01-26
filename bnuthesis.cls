@@ -8,7 +8,7 @@
 %% 
 %% This is a generated file.
 %% 
-%% Copyright (C) 2005-2021 by Tsinghua University TUNA Association <tuna@tsinghua.edu.cn>
+%% Copyright (C) 2005-2022 by Tsinghua University TUNA Association <tuna@tsinghua.edu.cn>
 %% 
 %% This work may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License, either version 1.3c
@@ -23,7 +23,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \ProvidesClass{bnuthesis}
-[2021/05/13 0.0.2 Beijing Normal University Thesis Template]
+[2022/01/24 0.0.3 Beijing Normal University Thesis Template]
 \newcommand\bnu@error[1]{%
   \ClassError{bnuthesis}{#1}{}%
 }
@@ -56,7 +56,7 @@
 }
 \hyphenation{Bnu-Thesis}
 \def\bnuthesis{BnuThesis}
-\def\version{0.0.2}
+\def\version{0.0.3}
 \RequirePackage{kvdefinekeys}
 \RequirePackage{kvsetkeys}
 \RequirePackage{kvoptions}
@@ -2048,6 +2048,14 @@
     },
     default = false,
   },
+  include-titlepage-en = {
+    name = include@titlepage@en,
+    choices = {
+      false,
+      true,
+    },
+    default = false,
+  },
 }
 \newcommand\bnu@format@date[2]{%
   \edef\bnu@@date{#2}%
@@ -2125,8 +2133,10 @@
   \fi
   \ifbnu@degree@graduate
     \ifbnu@thesis@type@thesis
-      \cleardoublepage
-      \bnu@titlepage@en
+      \ifbnu@include@titlepage@en@true
+        \cleardoublepage
+        \bnu@titlepage@en
+      \fi
     \fi
   \fi
   \clearpage
@@ -2197,6 +2207,7 @@
       \bnu@titlepage@info
     }\par
     \parbox[t][1.03cm][t]{\textwidth}{\centering\bnu@titlepage@date}\par
+    北京师范大学学位办\par
   \endgroup
   \clearpage
   \restoregeometry
@@ -2348,13 +2359,12 @@
 }
 \newcommand\bnu@titlepage@info@doctor@academic{%
   \bnu@titlepage@info@tabular{2.8cm}{2.8cm}{0.82cm}{%
+    \bnu@info@item{作者}{\bnu@name@title}{\bnu@author}%
+    \bnu@info@item{导师}{\bnu@name@title}{\bnu@supervisor}%
     \bnu@info@item{培养单位}{}{\bnu@department}%
-    \bnu@info@item{学科}{}{\bnu@discipline}%
-    \bnu@info@item{研究生}{\bnu@name@title}{\bnu@author}%
     \bnu@info@item{学号}{}{\bnu@student@id}%
-    \bnu@info@item{指导教师}{\bnu@name@title}{\bnu@supervisor}%
-    \bnu@info@item{副指导教师}{\bnu@name@title}{\bnu@associate@supervisor}%
-    \bnu@info@item{联合导师}{\bnu@name@title}{\bnu@co@supervisor}%
+    \bnu@info@item{学科专业}{}{\bnu@discipline}%
+    \bnu@info@item{完成日期}{}{\bnu@format@date{\bnu@date@zh@digit}{\bnu@date}}
   }\par
 }
 \newcommand\bnu@titlepage@info@doctor@professional{%
@@ -2756,21 +2766,13 @@
   \vskip 50bp%
   \begingroup
     \fontsize{14bp}{26bp}\selectfont
-    本人完全了解清华大学有关保留、使用学位论文的规定，即：\par
-    清华大学拥有在著作权法规定范围内学位论文的使用权，其中包括：%
-    （1）已获学位的研究生必须按学校规定提交学位论文，%
-    学校可以采用影印、缩印或其他复制手段保存研究生上交的学位论文；%
-    （2）\nobreak 为教学和科研目的，学校可以将公开的学位论文作为资料在图书馆、资料室等场所供校内师生阅读，%
-    或在校园网上供校内师生浏览部分内容；%
-    \ifbnu@degree@doctor
-      （3）根据《中华人民共和国学位条例暂行实施办法》及上级教育主管部门具体要求，向国家图书馆报送相应的学位论文。%
-    \else
-      （3）按照上级教育主管部门督导、抽查等要求，报送相应的学位论文。%
-    \fi
-    \par
-    本人保证遵守上述规定。\par
-    \vskip 6bp%
-    \textbf{（保密的论文在解密后遵守此规定）}\par
+    北京师范大学学位论文原创性声明\par
+    本人郑重声明：所呈交的学位论文，是本人在导师的指导下，独立进行研究工作所取得的成果。除文中已经注明引用的内容外，本论文不含任何其他个人或集体已经发表或撰写过的作品成果。对本文的研究做出重要贡献的个人和集体，均已在文中以明确方式标明。本人完全意识到本声明的法律结果由本人承担。\par
+    学位论文作者签名：日期：年月日\par
+    关于论文使用授权的说明\par
+    学位论文作者完全了解北京师范大学有关保留和使用学位论文的规定，即：研究生在校攻读学位期间论文工作的知识产权单位属北京师范大学。学校有权保留并向国家有关部门或机构送交论文的复印件和电子版，允许学位论文被查阅和借阅；学校可以公布学位论文的全部或部分内容，可以允许采用影印、缩印或其它复制手段保存、汇编学位论文。保密的学位论文在解密后遵守此规定。\par
+    本人签名：日期：\par
+    导师签名：日期：
   \endgroup
   \vskip1.2cm%
   \begingroup

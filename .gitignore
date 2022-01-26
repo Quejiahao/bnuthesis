@@ -3,15 +3,15 @@
 package-lock.json
 node_modules/
 dist/
-thuthesis*.zip
-thuthesis-ctan/
+bnuthesis*.zip
+bnuthesis-ctan/
 
 ## generated files:
 dtx-style.sty
-thuthesis.cls
-thuthesis.pdf
-thuthesis-example.pdf
-spine.pdf
+# bnuthesis.cls
+# bnuthesis.pdf
+# bnuthesis-example.pdf
+# spine.pdf
 *.hd
 
 ## test files:
