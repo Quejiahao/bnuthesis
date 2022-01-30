@@ -91,7 +91,7 @@
   %
   % 是否在中文封面后的空白页生成书脊（默认 false）
   %
-  include-spine = false,
+  include-spine = true,
   %
   % 密级和年限
   %   秘密, 机密, 绝密
@@ -177,6 +177,27 @@
   \fi
 }
 \makeatother
+
+% 算法环境
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\floatname{algorithm}{\mdseries\heiti 算法}
+\renewcommand{\algorithmicrequire}{\heiti 输入:}
+\renewcommand{\algorithmicensure}{\heiti 输出:}
+\DeclareCaptionFont{song}{\songti}
+\DeclareCaptionFont{minusfive}{\zihao{-5}}
+\captionsetup*[algorithm]{	% 算法标题设置
+  font={song, minusfive}	% 宋体小五
+}
+\AtBeginEnvironment{algorithmic}{%
+  \zihao{-5}%
+}
+
+% 使用 pgf 图片
+\usepackage{pgf}
+
+% 注释环境
+\usepackage{comment}
 
 % hyperref 宏包在最后调用
 \usepackage{hyperref}

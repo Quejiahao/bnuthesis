@@ -2154,6 +2154,7 @@
           \bnu@titlepage@graduate@academic
         \fi
       \fi
+      \bnu@titlepage@graduate@backlogo
     \else
       \ifbnu@thesis@type@proposal
         \bnu@titlepage@proposal
@@ -2174,9 +2175,8 @@
 }
 \newcommand\bnu@titlepage@graduate@academic{%
   \newgeometry{
-    top     = 2cm,
-    bottom  = 6cm,
-    hmargin = 3.5cm,
+    vmargin = 2.1cm,
+    hmargin = 3.17cm,
   }%
   \thispagestyle{empty}%
   \null\vskip 8.1pt%
@@ -2186,9 +2186,14 @@
       \hskip -21.5pt%
       \bnu@titlepage@secret
     }\par
+    \includegraphics[scale=1.273]{bnu-name-graduate.pdf}%
+    \vskip 24.1pt%
+    \bnu@titlepage@degree
     \vskip 40.5pt%
     \begingroup
-      \sffamily\fontsize{26bp}{46.8bp}\selectfont
+      \bfseries\heiti\xiaoer
+      \parindent=0bp%
+      论文题目：
       \bnu@title\par
     \endgroup
     \ifbnu@main@language@english
@@ -2199,24 +2204,20 @@
       \endgroup
       \vskip -9.2pt%
     \fi
-    \vskip 24.1pt%
-    \bnu@titlepage@degree
     \vfill
     \parbox[t][7.25cm][t]{\textwidth}{%
-      \centering\fangsong\fontsize{16bp}{31.2bp}\selectfont
+      \centering\bfseries\songti\xiaosan
       \bnu@titlepage@info
     }\par
-    \parbox[t][1.03cm][t]{\textwidth}{\centering\bnu@titlepage@date}\par
-    北京师范大学学位办\par
+    {\bfseries\CJKfamily+{}\heiti\sanhao 北京师范大学学位办}\par
   \endgroup
   \clearpage
   \restoregeometry
 }
 \newcommand\bnu@titlepage@graduate@professional{%
   \newgeometry{
-    top     = 2cm,
-    bottom  = 6cm,
-    hmargin = 3.5cm,
+    vmargin = 2.1cm,
+    hmargin = 3.17cm,
   }%
   \thispagestyle{empty}%
   \null\vskip 0.45cm%
@@ -2248,6 +2249,22 @@
       \bnu@titlepage@info
     }\par
     \parbox[t][1.25cm][t]{\textwidth}{\centering\bnu@titlepage@date}\par
+  \endgroup
+  \clearpage
+  \restoregeometry
+}
+\newcommand\bnu@titlepage@graduate@backlogo{%
+  \newgeometry{
+    vmargin = 2.1cm,
+    hmargin = 3.17cm,
+  }%
+  \thispagestyle{empty}%
+  \begingroup
+    \vspace*{\fill}%
+    \begin{center}
+      \includegraphics[scale=2.2]{bnu-logo.pdf}
+    \end{center}
+    \vspace*{\fill}%
   \endgroup
   \clearpage
   \restoregeometry
@@ -2301,14 +2318,23 @@
 }
 \newcommand\bnu@titlepage@degree{%
   \begingroup
-    \CJKfamily+{}\xiaoer
+    \CJKfamily+{}\bfseries\heiti\fontsize{45bp}{45bp}\selectfont%
     \def\CJKglue{\hskip 1bp}%
     \ifbnu@thesis@type@thesis
-      (申请北京师范大学\bnu@degree@name
       \ifbnu@degree@type@professional
         专业%
+      \else
+        学术%
       \fi
-      学位论文)%
+      \ifbnu@degree@doctor
+        博士%
+      \else
+        \ifbnu@degree@master
+          硕士%
+        \fi
+      \fi
+      研究生\\
+      学位论文%
     \else
       \ifbnu@thesis@type@proposal
         (北京师范大学%
@@ -2765,14 +2791,44 @@
   \endgroup
   \vskip 50bp%
   \begingroup
+    \ctexset{
+      chapter = {
+        format     = {\centering\bfseries\xiaosi[1.95]},
+        beforeskip = 0bp,
+        afterskip  = 35.6bp,
+      },
+    }%
     \fontsize{14bp}{26bp}\selectfont
-    北京师范大学学位论文原创性声明\par
-    本人郑重声明：所呈交的学位论文，是本人在导师的指导下，独立进行研究工作所取得的成果。除文中已经注明引用的内容外，本论文不含任何其他个人或集体已经发表或撰写过的作品成果。对本文的研究做出重要贡献的个人和集体，均已在文中以明确方式标明。本人完全意识到本声明的法律结果由本人承担。\par
-    学位论文作者签名：日期：年月日\par
-    关于论文使用授权的说明\par
-    学位论文作者完全了解北京师范大学有关保留和使用学位论文的规定，即：研究生在校攻读学位期间论文工作的知识产权单位属北京师范大学。学校有权保留并向国家有关部门或机构送交论文的复印件和电子版，允许学位论文被查阅和借阅；学校可以公布学位论文的全部或部分内容，可以允许采用影印、缩印或其它复制手段保存、汇编学位论文。保密的学位论文在解密后遵守此规定。\par
-    本人签名：日期：\par
-    导师签名：日期：
+    \bnu@chapter*[]{北京师范大学学位论文原创性声明}%
+    \xiaosi[1.95]
+    本人郑重声明：%
+    所呈交的学位论文，是本人在导师的指导下，独立进行研究工作所取得的成果。%
+    除文中已经注明引用的内容外，本论文不含任何其他个人或集体已经发表或撰写过的作品成果。%
+    对本文的研究做出重要贡献的个人和集体，均已在文中以明确方式标明。%
+    本人完全意识到本声明的法律结果由本人承担。\par
+    \null\par
+    学位论文作者签名：\hfill 日期：年\hspace{3ex} 月\hspace{3ex} 日\par
+  \endgroup
+  \vskip 34.5bp
+  \begingroup
+    \ctexset{
+      chapter = {
+        format     = {\centering\bfseries\xiaosi[1.95]},
+        beforeskip = 0bp,
+        afterskip  = 35.6bp,
+        break = {},
+      },
+    }%
+    \bnu@chapter[]{关于论文使用授权的说明}%
+    学位论文作者完全了解北京师范大学有关保留和使用学位论文的规定，即：%
+    研究生在校攻读学位期间论文工作的知识产权单位属北京师范大学。%
+    学校有权保留并向国家有关部门或机构送交论文的复印件和电子版，允许学位论文被查阅和借阅；%
+    学校可以公布学位论文的全部或部分内容，可以允许采用影印、缩印或其它复制手段保存、汇编学位论文。%
+    保密的学位论文在解密后遵守此规定。\par
+    \null\par
+    \null\par
+    本人签名：\hfill 日期：\par
+    导师签名：\hfill 日期：\par
   \endgroup
   \vskip1.2cm%
   \begingroup
