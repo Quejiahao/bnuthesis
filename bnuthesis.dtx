@@ -1856,8 +1856,8 @@
 % \subsection{页面设置}
 % \label{sec:layout}
 %
-% 研究生《写作指南》：
-% 页边距：上下左右均为 3.0 厘米，装订线 0 厘米；
+% 研究生《北京师范大学学位论文撰写规则》：
+% 页边距：上左：2.5 厘米，下右：2.0 厘米，装订线 0 厘米；
 % 页眉距边界：2.2 厘米，页脚距边界：2.2 厘米。
 %
 % 《本科生毕业论文写作规范》：
@@ -1889,18 +1889,27 @@
       }%
     \else
       \geometry{
-        %hmargin    = 3cm,
         left       = 2.5cm,
         right      = 2.0cm,
       }%
     \fi
   \else
-    \geometry{
-      margin     = 3cm,
-      headheight = 0.5cm,
-      headsep    = 0.3cm,
-      footskip   = 0.8cm,
-    }%
+    \ifbnu@degree@graduate
+      \geometry{
+        top        = 2.5cm,
+        bottom     = 2.0cm,
+        left       = 2.5cm,
+        right      = 2.0cm,
+        headheight = 0.5cm,
+      }%
+    \else
+      \geometry{
+        margin     = 3cm,
+        headheight = 0.5cm,
+        headsep    = 0.3cm,
+        footskip   = 0.8cm,
+      }%
+    \fi
   \fi
 }
 \bnu@set@geometry
@@ -3516,12 +3525,15 @@
 % \subsubsection{章节标题}
 % \label{sec:theor}
 %    \begin{macrocode}
+\newcommand{\bnu@abstract@name}{摘\quad 要}
 \ifbnu@degree@bachelor
-  \newcommand{\bnu@abstract@name}{摘\quad 要}
   \newcommand{\bnu@abstract@name@en}{ABSTRACT}
 \else
-  \newcommand{\bnu@abstract@name}{摘\quad 要}
-  \newcommand{\bnu@abstract@name@en}{Abstract}
+  \ifbnu@degree@graduate
+    \newcommand{\bnu@abstract@name@en}{ABSTRACT}
+  \else
+    \newcommand{\bnu@abstract@name@en}{Abstract}
+  \fi
 \fi
 %    \end{macrocode}
 %
@@ -3617,23 +3629,23 @@
 %   \item 各章标题，例如：“\textsf{第 1 章 引言}”。
 %
 %     章序号与章名之间空一个汉字符。
-%     采用黑体三号字，居中书写，单倍行距，
+%     采用黑体三号字，居中书写，，行距为固定值 20 pt，
 %     段前空 24 磅，段后空 18 磅。
 %
 %   \item 一级节标题，例如：“\textsf{2.1 实验装置与实验方法}”。
 %
-%     节标题序号与标题名之间空一个汉字符（下同）。
-%     采用黑体四号（14pt）字居左书写，行距为固定值 20 磅，
+%     节标题序号与标题名之间空半个汉字符（下同）。
+%     采用黑体四号（14pt）字居左书写，行距为固定值 20 pt，
 %     段前空 24 磅，段后空 6 磅。
 %
 %   \item 二级节标题，例如：“\textsf{2.1.1 实验装置}”。
 %
-%     采用黑体 13pt 字居左书写，行距为固定值 20 磅，
+%     采用黑体 13pt 字居左书写，行距为固定值 20 pt，
 %     段前空 12 磅，段后空 6 磅。
 %
 %   \item 三级节标题，例如：“\textsf{2.1.2.1 归纳法}”。
 %
-%     采用黑体小四号（12pt）字居左书写，行距为固定值 20 磅，
+%     采用黑体小四号（12pt）字居左书写，行距为固定值 20 pt，
 %     段前空 12 磅，段后空 6 磅。
 % \end{itemize}
 %
@@ -3643,19 +3655,22 @@
     \ifbnu@main@language@chinese
       \ctexset{%
         chapter = {
-          format      = \centering\sffamily\sanhao,
+          format      = \centering\heiti\fontsize{16bp}{20pt}\selectfont,
           nameformat  = {},
           titleformat = {},
           name        = {第,章},
         },
         section = {
-          format     = \sffamily\fontsize{14bp}{20bp}\selectfont,
+          format     = \heiti\fontsize{15bp}{20pt}\selectfont,
+          aftername    = \hspace{0.5 em},
         },
         subsection = {
-          format     = \sffamily\fontsize{13bp}{20bp}\selectfont,
+          format     = \heiti\fontsize{14bp}{20pt}\selectfont,
+          aftername    = \hspace{0.5 em},
         },
         subsubsection = {
-          format     = \sffamily\fontsize{12bp}{20bp}\selectfont,
+          format     = \heiti\fontsize{12bp}{20pt}\selectfont,
+          aftername    = \hspace{0.5 em},
         },
       }%
     \else
@@ -3876,7 +3891,7 @@
 %     段后 0 磅；其他内容采用宋体小四号字，行距为固定值 20 磅，
 %     段前、段后均为 0 磅。
 %   \item 目录中的章标题行居左书写，一级节标题行缩进 1 个汉字符，
-%     二级节标题行缩进 2 个汉字符。
+%     二级节标题行缩进 2 个汉字符，三级节标题行缩进 3 个汉字符。
 % \end{enumerate}
 %
 % 注意示例中章标题的字母和数字是无衬线体，所以用这里用 \cs{sffamily}，
@@ -3890,11 +3905,15 @@
         {\rmfamily\bnu@leaders\thecontentspage}%
       \titlecontents{section}
         [1em]{}
-        {\contentspush{\thecontentslabel\quad}}{}
+        {\contentspush{\thecontentslabel\hspace{0.5em}}}{}
         {\bnu@leaders\thecontentspage}%
       \titlecontents{subsection}
         [2em]{}
-        {\contentspush{\thecontentslabel\quad}}{}
+        {\contentspush{\thecontentslabel\hspace{0.5em}}}{}
+        {\bnu@leaders\thecontentspage}%
+      \titlecontents{subsubsection}
+        [3em]{}
+        {\contentspush{\thecontentslabel\hspace{0.5em}}}{}
         {\bnu@leaders\thecontentspage}%
     \else
       \titlecontents{chapter}
@@ -3907,6 +3926,10 @@
         {\bnu@leaders\thecontentspage}%
       \titlecontents{subsection}
         [2em]{}
+        {\contentspush{\thecontentslabel\space}}{}
+        {\bnu@leaders\thecontentspage}%
+      \titlecontents{subsubsection}
+        [3em]{}
         {\contentspush{\thecontentslabel\space}}{}
         {\bnu@leaders\thecontentspage}%
     \fi
@@ -5066,26 +5089,34 @@
 % \end{macro}
 %
 % \begin{environment}{abstract}
-% 中文摘要部分的标题为“\textbf{摘要}”，用黑体小三号字。
-% 摘要内容用四号字书写，两端对齐，汉字用宋体，外文字用 Times New Roman 体，
+% 研究生中文摘要部分的论文题目为三号黑体字，题目下空一行居中打印为小三号黑体字“\textbf{摘要}”。
+% 摘要内容用小四号字书写，两端对齐，汉字用宋体，外文字用 Times New Roman 体，
 % 标点符号一律用中文输入状态下的标点符号。
 %    \begin{macrocode}
 \newenvironment{abstract}{%
-  \ifbnu@degree@bachelor
-    \clearpage
-  \fi
   \bnusetup{language = chinese}%
   \ifbnu@degree@graduate
+    \clearpage
     \begingroup
+      {\centering\heiti\sanhao\bnu@title\par}%
+      \ctexset{%
+        chapter = {
+          break   = {},
+          format  = {\centering\heiti\xiaosan},
+          afterskip  = 35.6bp,
+        }
+      }%
       \ifbnu@main@language@english
         \ctexset{%
           chapter/format = \centering\sffamily\fontsize{16bp}{20bp}\selectfont,
         }%
       \fi
-      \bnu@chapter*{\bnu@abstract@name}%
+      \bnu@chapter{\bnu@abstract@name}%
     \endgroup
+    \xiaosi
   \else
     \ifbnu@degree@bachelor
+      \clearpage
       \begingroup
         {\centering\bfseries\heiti\sanhao\bnu@title\par}%
         \ctexset{%
@@ -5111,17 +5142,25 @@
   \null\par
   \ifbnu@degree@graduate
     \noindent
-    \textsf{关键词：}%
+    \heiti{\sihao 关键词：}%
   \else
     \heiti\textbf{关键词：}%
   \fi
   \ifbnu@degree@bachelor
     \songti\bnu@clist@use{\bnu@keywords}{\quad}%
   \else
-    \bnu@clist@use{\bnu@keywords}{；}%
+    \ifbnu@degree@graduate
+      \songti\bnu@clist@use{\bnu@keywords}{，}%
+    \else
+      \bnu@clist@use{\bnu@keywords}{；}%
+    \fi
   \fi
   \ifbnu@degree@bachelor
     \clearpage
+  \else
+    \ifbnu@degree@graduate
+      \clearpage
+    \fi
   \fi
   \bnu@reset@main@language % switch back to main language
 }
@@ -5129,18 +5168,27 @@
 % \end{environment}
 %
 % \begin{environment}{abstract*}
-% 英文摘要部分的标题为 \textbf{ABSTRACT}，用  Times New Roman 三号字。
-% 摘要内容用四号 Times New Roman。
+% 研究生英文摘要部分的论文题目为 Times New Roman 三号字，标题为 \textbf{ABSTRACT}，用 Times New Roman 加粗小三号字。
+% 摘要内容用小四号 Times New Roman。
 %    \begin{macrocode}
 \newenvironment{abstract*}{%
-  \ifbnu@degree@bachelor
-    \clearpage
-  \fi
   \bnusetup{language = english}%
   \ifbnu@degree@graduate
-    \bnu@chapter*{\bnu@abstract@name@en}%
+    \clearpage
+    {\centering\sanhao\bnu@title@en\par}%
+    \ctexset{%
+      chapter = {
+        break   = {},
+        format  = {\centering\bfseries\xiaosan},
+        afterskip  = 35.6bp,
+      }
+    }%
+    \bnu@chapter{\bnu@abstract@name@en}%
+    \xiaosi%
+    \ctexset{autoindent=4ex}%
   \else
     \ifbnu@degree@bachelor
+      \clearpage
       {\centering\bfseries\sanhao\bnu@title@en\par}%
       \ctexset{%
         chapter = {
@@ -5167,16 +5215,26 @@
   \ifbnu@degree@bachelor
     \textbf{KEY WORDS:}%
   \else
-    \textbf{Keywords:}%
+    \ifbnu@degree@graduate
+      \textbf{KEY WORDS:}%
+    \else
+      \textbf{Keywords:}%
+    \fi
   \fi
   \space
   \ifbnu@degree@bachelor
     \bnu@clist@use{\bnu@keywords@en}{\quad}%
   \else
-    \bnu@clist@use{\bnu@keywords@en}{; }%
+    \ifbnu@degree@graduate
+      \bnu@clist@use{\bnu@keywords@en}{, }%
+    \else
+      \bnu@clist@use{\bnu@keywords@en}{; }%
+    \fi
   \fi
   \ifbnu@degree@graduate
     \vspace*{\stretch{1}}%
+    \clearpage
+    \bnu@set@indent
   \fi
   \ifbnu@degree@bachelor
     \clearpage
@@ -6468,6 +6526,7 @@
 %   书脊上方写论文题目，下方写本科生姓名，距上下页边均为 3cm。
 %
 % 研究生：
+%   硕士学位论文可不打印书脊，博士学位论文自 2007 年起要求打印书脊。
 %   示例中上下页边距为 5.5 cm，左右边距为 1 cm。
 %    \begin{macrocode}
 \bnu@define@key{

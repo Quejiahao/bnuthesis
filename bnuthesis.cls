@@ -418,18 +418,27 @@
       }%
     \else
       \geometry{
-        %hmargin    = 3cm,
         left       = 2.5cm,
         right      = 2.0cm,
       }%
     \fi
   \else
-    \geometry{
-      margin     = 3cm,
-      headheight = 0.5cm,
-      headsep    = 0.3cm,
-      footskip   = 0.8cm,
-    }%
+    \ifbnu@degree@graduate
+      \geometry{
+        top        = 2.5cm,
+        bottom     = 2.0cm,
+        left       = 2.5cm,
+        right      = 2.0cm,
+        headheight = 0.5cm,
+      }%
+    \else
+      \geometry{
+        margin     = 3cm,
+        headheight = 0.5cm,
+        headsep    = 0.3cm,
+        footskip   = 0.8cm,
+      }%
+    \fi
   \fi
 }
 \bnu@set@geometry
@@ -1659,12 +1668,15 @@
 \AtEndOfPackageFile*{threeparttable}{
   \g@addto@macro\TPT@defaults{\wuhao}
 }
+\newcommand{\bnu@abstract@name}{摘\quad 要}
 \ifbnu@degree@bachelor
-  \newcommand{\bnu@abstract@name}{摘\quad 要}
   \newcommand{\bnu@abstract@name@en}{ABSTRACT}
 \else
-  \newcommand{\bnu@abstract@name}{摘\quad 要}
-  \newcommand{\bnu@abstract@name@en}{Abstract}
+  \ifbnu@degree@graduate
+    \newcommand{\bnu@abstract@name@en}{ABSTRACT}
+  \else
+    \newcommand{\bnu@abstract@name@en}{Abstract}
+  \fi
 \fi
 \ctexset{%
   chapter = {
@@ -1735,19 +1747,22 @@
     \ifbnu@main@language@chinese
       \ctexset{%
         chapter = {
-          format      = \centering\sffamily\sanhao,
+          format      = \centering\heiti\fontsize{16bp}{20pt}\selectfont,
           nameformat  = {},
           titleformat = {},
           name        = {第,章},
         },
         section = {
-          format     = \sffamily\fontsize{14bp}{20bp}\selectfont,
+          format     = \heiti\fontsize{15bp}{20pt}\selectfont,
+          aftername    = \hspace{0.5 em},
         },
         subsection = {
-          format     = \sffamily\fontsize{13bp}{20bp}\selectfont,
+          format     = \heiti\fontsize{14bp}{20pt}\selectfont,
+          aftername    = \hspace{0.5 em},
         },
         subsubsection = {
-          format     = \sffamily\fontsize{12bp}{20bp}\selectfont,
+          format     = \heiti\fontsize{12bp}{20pt}\selectfont,
+          aftername    = \hspace{0.5 em},
         },
       }%
     \else
@@ -1921,11 +1936,15 @@
         {\rmfamily\bnu@leaders\thecontentspage}%
       \titlecontents{section}
         [1em]{}
-        {\contentspush{\thecontentslabel\quad}}{}
+        {\contentspush{\thecontentslabel\hspace{0.5em}}}{}
         {\bnu@leaders\thecontentspage}%
       \titlecontents{subsection}
         [2em]{}
-        {\contentspush{\thecontentslabel\quad}}{}
+        {\contentspush{\thecontentslabel\hspace{0.5em}}}{}
+        {\bnu@leaders\thecontentspage}%
+      \titlecontents{subsubsection}
+        [3em]{}
+        {\contentspush{\thecontentslabel\hspace{0.5em}}}{}
         {\bnu@leaders\thecontentspage}%
     \else
       \titlecontents{chapter}
@@ -1938,6 +1957,10 @@
         {\bnu@leaders\thecontentspage}%
       \titlecontents{subsection}
         [2em]{}
+        {\contentspush{\thecontentslabel\space}}{}
+        {\bnu@leaders\thecontentspage}%
+      \titlecontents{subsubsection}
+        [3em]{}
         {\contentspush{\thecontentslabel\space}}{}
         {\bnu@leaders\thecontentspage}%
     \fi
@@ -2911,21 +2934,29 @@
   \expandafter\comma@parse\expandafter{#1}{\bnu@clist@processor}%
 }
 \newenvironment{abstract}{%
-  \ifbnu@degree@bachelor
-    \clearpage
-  \fi
   \bnusetup{language = chinese}%
   \ifbnu@degree@graduate
+    \clearpage
     \begingroup
+      {\centering\heiti\sanhao\bnu@title\par}%
+      \ctexset{%
+        chapter = {
+          break   = {},
+          format  = {\centering\heiti\xiaosan},
+          afterskip  = 35.6bp,
+        }
+      }%
       \ifbnu@main@language@english
         \ctexset{%
           chapter/format = \centering\sffamily\fontsize{16bp}{20bp}\selectfont,
         }%
       \fi
-      \bnu@chapter*{\bnu@abstract@name}%
+      \bnu@chapter{\bnu@abstract@name}%
     \endgroup
+    \xiaosi
   \else
     \ifbnu@degree@bachelor
+      \clearpage
       \begingroup
         {\centering\bfseries\heiti\sanhao\bnu@title\par}%
         \ctexset{%
@@ -2947,29 +2978,46 @@
   \null\par
   \ifbnu@degree@graduate
     \noindent
-    \textsf{关键词：}%
+    \heiti{\sihao 关键词：}%
   \else
     \heiti\textbf{关键词：}%
   \fi
   \ifbnu@degree@bachelor
     \songti\bnu@clist@use{\bnu@keywords}{\quad}%
   \else
-    \bnu@clist@use{\bnu@keywords}{；}%
+    \ifbnu@degree@graduate
+      \songti\bnu@clist@use{\bnu@keywords}{，}%
+    \else
+      \bnu@clist@use{\bnu@keywords}{；}%
+    \fi
   \fi
   \ifbnu@degree@bachelor
     \clearpage
+  \else
+    \ifbnu@degree@graduate
+      \clearpage
+    \fi
   \fi
   \bnu@reset@main@language % switch back to main language
 }
 \newenvironment{abstract*}{%
-  \ifbnu@degree@bachelor
-    \clearpage
-  \fi
   \bnusetup{language = english}%
   \ifbnu@degree@graduate
-    \bnu@chapter*{\bnu@abstract@name@en}%
+    \clearpage
+    {\centering\sanhao\bnu@title@en\par}%
+    \ctexset{%
+      chapter = {
+        break   = {},
+        format  = {\centering\bfseries\xiaosan},
+        afterskip  = 35.6bp,
+      }
+    }%
+    \bnu@chapter{\bnu@abstract@name@en}%
+    \xiaosi%
+    \ctexset{autoindent=4ex}%
   \else
     \ifbnu@degree@bachelor
+      \clearpage
       {\centering\bfseries\sanhao\bnu@title@en\par}%
       \ctexset{%
         chapter = {
@@ -2996,16 +3044,26 @@
   \ifbnu@degree@bachelor
     \textbf{KEY WORDS:}%
   \else
-    \textbf{Keywords:}%
+    \ifbnu@degree@graduate
+      \textbf{KEY WORDS:}%
+    \else
+      \textbf{Keywords:}%
+    \fi
   \fi
   \space
   \ifbnu@degree@bachelor
     \bnu@clist@use{\bnu@keywords@en}{\quad}%
   \else
-    \bnu@clist@use{\bnu@keywords@en}{; }%
+    \ifbnu@degree@graduate
+      \bnu@clist@use{\bnu@keywords@en}{, }%
+    \else
+      \bnu@clist@use{\bnu@keywords@en}{; }%
+    \fi
   \fi
   \ifbnu@degree@graduate
     \vspace*{\stretch{1}}%
+    \clearpage
+    \bnu@set@indent
   \fi
   \ifbnu@degree@bachelor
     \clearpage
