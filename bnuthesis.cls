@@ -3004,7 +3004,12 @@
   \bnusetup{language = english}%
   \ifbnu@degree@graduate
     \clearpage
-    {\centering\sanhao\bnu@title@en\par}%
+    {%
+      \sanhao%
+      \parbox[c][0cm][c]{\textwidth - 10ex}{%
+        \centering\bnu@title@en\par%
+      }%
+    }%
     \ctexset{%
       chapter = {
         break   = {},

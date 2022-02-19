@@ -5168,14 +5168,19 @@
 % \end{environment}
 %
 % \begin{environment}{abstract*}
-% 研究生英文摘要部分的论文题目为 Times New Roman 三号字，标题为 \textbf{ABSTRACT}，用 Times New Roman 加粗小三号字。
+% 研究生英文摘要部分的论文题目为 Times New Roman 三号字，左右两边至少留五个字符空格，标题为 \textbf{ABSTRACT}，用 Times New Roman 加粗小三号字。
 % 摘要内容用小四号 Times New Roman。
 %    \begin{macrocode}
 \newenvironment{abstract*}{%
   \bnusetup{language = english}%
   \ifbnu@degree@graduate
     \clearpage
-    {\centering\sanhao\bnu@title@en\par}%
+    {%
+      \sanhao%
+      \parbox[c][0cm][c]{\textwidth - 10ex}{%
+        \centering\bnu@title@en\par%
+      }%
+    }%
     \ctexset{%
       chapter = {
         break   = {},
