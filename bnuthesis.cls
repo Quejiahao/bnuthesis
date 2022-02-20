@@ -1594,11 +1594,17 @@
   \counterwithout{figure}{chapter}
   \counterwithout{table}{chapter}
 \fi
+\ifbnu@degree@graduate
+  \counterwithout{figure}{chapter}
+  \counterwithout{table}{chapter}
+\fi
 \renewcommand\thefigure{%
   \ifnum\c@chapter>\z@
     \ifbnu@degree@bachelor\relax\else
-      \thechapter
-      \bnu@figure@number@separator
+      \ifbnu@degree@graduate\relax\else
+        \thechapter
+        \bnu@figure@number@separator
+      \fi
     \fi
   \fi
   \@arabic\c@figure
@@ -1606,8 +1612,10 @@
 \renewcommand\thetable{%
   \ifnum\c@chapter>\z@
     \ifbnu@degree@bachelor\relax\else
-      \thechapter
-      \bnu@table@number@separator
+      \ifbnu@degree@graduate\relax\else
+        \thechapter
+        \bnu@table@number@separator
+      \fi
     \fi
   \fi
   \@arabic\c@table
@@ -3624,6 +3632,12 @@
     \renewcommand\theequation{%
       \@chinese\c@equation
     }
+  }
+\fi
+\ifbnu@degree@graduate
+  \g@addto@macro\appendix{%
+    \setcounter{figure}{0}
+    \setcounter{table}{0}
   }
 \fi
 \newenvironment{survey}{%
