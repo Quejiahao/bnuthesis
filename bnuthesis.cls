@@ -1939,7 +1939,13 @@
   \else
     \ifbnu@main@language@chinese
       \titlecontents{chapter}
-        [\z@]{\addvspace{6bp}\sffamily}
+        [\z@]{\addvspace{6bp}
+          \ifbnu@toc@chapter@style@arial
+            \sffamily
+          \else
+            \heiti
+          \fi
+        }
         {\contentspush{\thecontentslabel\quad}}{}
         {\rmfamily\bnu@leaders\thecontentspage}%
       \titlecontents{section}
@@ -2176,15 +2182,7 @@
   \bnusetup{language = chinese}%
   \ifbnu@degree@graduate
     \ifbnu@thesis@type@thesis
-      \ifbnu@degree@type@academic
-        \bnu@titlepage@graduate@academic
-      \else
-        \ifx\bnu@discipline\@empty
-          \bnu@titlepage@graduate@professional
-        \else
-          \bnu@titlepage@graduate@academic
-        \fi
-      \fi
+      \bnu@titlepage@graduate@cover
       \bnu@titlepage@graduate@backlogo
     \else
       \ifbnu@thesis@type@proposal
@@ -2204,7 +2202,7 @@
   \fi
   \bnu@reset@main@language
 }
-\newcommand\bnu@titlepage@graduate@academic{%
+\newcommand\bnu@titlepage@graduate@cover{%
   \newgeometry{
     vmargin = 2.1cm,
     hmargin = 3.17cm,
@@ -2236,50 +2234,13 @@
       \vskip -9.2pt%
     \fi
     \vfill
-    \parbox[t][7.25cm][t]{\textwidth}{%
+    \parbox[t][10cm][t]{\textwidth}{%
       \centering\bfseries\songti\xiaosan
       \bnu@titlepage@info
     }\par
-    {\bfseries\CJKfamily+{}\heiti\sanhao 北京师范大学学位办}\par
-  \endgroup
-  \clearpage
-  \restoregeometry
-}
-\newcommand\bnu@titlepage@graduate@professional{%
-  \newgeometry{
-    vmargin = 2.1cm,
-    hmargin = 3.17cm,
-  }%
-  \thispagestyle{empty}%
-  \null\vskip 0.45cm%
-  \begingroup
-    \centering
-    \parbox[t][1.52cm][t]{\textwidth}{%
-      \hskip -0.69cm%
-      \bnu@titlepage@secret
+    {%
+      \bfseries\CJKfamily+{}\heiti\sanhao\bnu@fixed@box{10.3307em}{北京师范大学学位办}%
     }\par
-    \vskip 1.5cm%
-    \begingroup
-      % 1.21 倍行距，无网格
-      \sffamily\fontsize{26bp}{40.9bp}\selectfont
-      \bnu@title\par
-    \endgroup
-    \ifbnu@main@language@english
-      \vskip 5.4pt%
-      \begingroup
-        \sffamily\bfseries\fontsize{20bp}{31.2bp}\selectfont
-        \bnu@title@en\par
-      \endgroup
-      \vskip -9.2pt%
-    \fi
-    \vskip 25.5pt%
-    \bnu@titlepage@degree
-    \vfill
-    \parbox[t][5.24cm][t]{\textwidth}{%
-      \centering\fangsong\fontsize{16bp}{1cm}\selectfont
-      \bnu@titlepage@info
-    }\par
-    \parbox[t][1.25cm][t]{\textwidth}{\centering\bnu@titlepage@date}\par
   \endgroup
   \clearpage
   \restoregeometry
@@ -2383,39 +2344,20 @@
   \endgroup
 }
 \newcommand\bnu@titlepage@info{%
-  \ifbnu@degree@doctor
-    \ifbnu@degree@type@academic
-      \bnu@titlepage@info@doctor@academic
-    \else
-      \bnu@titlepage@info@doctor@professional
+  \def\bnu@name@title@format##1##2{%
+    \ifx##1\@empty\else
+      \bnu@stretch{3em}{##1}\quad%
     \fi
-  \else
-    \ifbnu@degree@type@academic
-      \bnu@titlepage@info@master@academic
-    \else
-      \ifx\bnu@discipline\@empty
-        \bnu@titlepage@info@master@other
-      \else
-        \bnu@titlepage@info@master@engineer
-      \fi
-    \fi
-  \fi
-}
-\newcommand\bnu@titlepage@info@tabular[4]{%
-  \def\bnu@info@item##1##2##3{%
-    \ifx##3\@empty\else
-      \bnu@pad{#1}{\bnu@fixed@box{#2}{##1}}%
-      \bnu@pad{#3}{：}%
-      ##2{##3}\\
+    \ifx##2\@empty\else
+      \bnu@stretch{3em}{##2}%
     \fi
   }%
-  \begin{tabular}{l}%
-    \renewcommand\arraystretch{1}%
-    #4%
-  \end{tabular}%
-}
-\newcommand\bnu@titlepage@info@doctor@academic{%
-  \bnu@titlepage@info@tabular{2.8cm}{2.8cm}{0.82cm}{%
+  \bnu@titlepage@info@tabular{4em}{4em}{1.491em}{%
+    \ifbnu@degree@type@professional
+      \ifbnu@degree@master
+        \bnu@info@item{学位类别}{}{\bnu@degree@name}%
+      \fi
+    \fi
     \bnu@info@item{作者}{\bnu@name@title}{\bnu@author}%
     \bnu@info@item{导师}{\bnu@name@title}{\bnu@supervisor}%
     \bnu@info@item{培养单位}{}{\bnu@department}%
@@ -2424,47 +2366,21 @@
     \bnu@info@item{完成日期}{}{\bnu@format@date{\bnu@date@zh@digit}{\bnu@date}}
   }\par
 }
-\newcommand\bnu@titlepage@info@doctor@professional{%
-  \bnu@titlepage@info@tabular{3.03cm}{5em}{1.52cm}{%
-    \bnu@info@item{培养单位}{}{\bnu@department}%
-    \bnu@info@item{申请人}{\bnu@name@title}{\bnu@author}%
-    \bnu@info@item{学号}{}{\bnu@student@id}%
-    \bnu@info@item{指导教师}{\bnu@name@title}{\bnu@supervisor}%
-    \bnu@info@item{副指导教师}{\bnu@name@title}{\bnu@associate@supervisor}%
-    \bnu@info@item{联合导师}{\bnu@name@title}{\bnu@co@supervisor}%
-  }\par
-}
-\newcommand\bnu@titlepage@info@master@academic{%
-  \bnu@titlepage@info@tabular{3.59cm}{5.5em}{0.82cm}{%
-    \bnu@info@item{培养单位}{}{\bnu@department}%
-    \bnu@info@item{学科}{}{\bnu@discipline}%
-    \bnu@info@item{研究生}{\bnu@name@title}{\bnu@author}%
-    \bnu@info@item{学号}{}{\bnu@student@id}%
-    \bnu@info@item{指导教师}{\bnu@name@title}{\bnu@supervisor}%
-    \bnu@info@item{副指导教师}{\bnu@name@title}{\bnu@associate@supervisor}%
-    \bnu@info@item{联合指导教师}{\bnu@name@title}{\bnu@co@supervisor}%
-  }\par
-}
-\newcommand\bnu@titlepage@info@master@engineer{%
-  \bnu@titlepage@info@tabular{2.8cm}{2.8cm}{1.34cm}{%
-    \bnu@info@item{培养单位}{}{\bnu@department}%
-    \bnu@info@item{工程领域}{}{\bnu@discipline}%
-    \bnu@info@item{申请人}{\bnu@name@title}{\bnu@author}%
-    \bnu@info@item{学号}{}{\bnu@student@id}%
-    \bnu@info@item{指导教师}{\bnu@name@title}{\bnu@supervisor}%
-    \bnu@info@item{副指导教师}{\bnu@name@title}{\bnu@associate@supervisor}%
-    \bnu@info@item{联合指导教师}{\bnu@name@title}{\bnu@co@supervisor}%
-  }\par
-}
-\newcommand\bnu@titlepage@info@master@other{%
-  \bnu@titlepage@info@tabular{3.28cm}{5em}{1.52cm}{%
-    \bnu@info@item{培养单位}{}{\bnu@department}%
-    \bnu@info@item{申请人}{\bnu@name@title}{\bnu@author}%
-    \bnu@info@item{学号}{}{\bnu@student@id}%
-    \bnu@info@item{指导教师}{\bnu@name@title}{\bnu@supervisor}%
-    \bnu@info@item{副指导教师}{\bnu@name@title}{\bnu@associate@supervisor}%
-    \bnu@info@item{联合指导教师}{\bnu@name@title}{\bnu@co@supervisor}%
-  }\par
+\newcommand\bnu@titlepage@info@tabular[4]{%
+  \def\bnu@info@item##1##2##3{%
+    \ifx##3\@empty\else
+      \bnu@pad{#1}{\bnu@fixed@box{#2}{##1}}%
+      \bnu@pad{#3}{：}%
+      & ##2{##3}\\
+    \fi
+  }%
+  \begingroup
+    \renewcommand\arraystretch{1.7477}%
+    \setlength{\tabcolsep}{0pt}
+    \begin{tabular}{W{r}{0.372\textwidth}W{c}{0.618\textwidth}}%
+      #4%
+    \end{tabular}%
+  \endgroup
 }
 \newcommand\bnu@titlepage@date{%
   \begingroup
@@ -2639,7 +2555,12 @@
       \fi
     }%
     \def\bnu@name@title@format##1##2{%
-      \bnu@stretch{3em}{##1}\quad ##2%
+      \ifx##1\@empty\else
+        \bnu@stretch{3em}{##1}\quad%
+      \fi
+      \ifx##2\@empty\else
+        \bnu@stretch{3em}{##2}%
+      \fi
     }%
     \bnu@info@item{部院系}{}{\bnu@department}%
     \bnu@info@item{专业}{}{\bnu@discipline}%
@@ -2806,30 +2727,19 @@
   日\ifbnu@degree@bachelor\hspace{1em}\else\hspace{2em}\fi 期：}
 \newcommand\bnu@copyright@page@graduate{%
   \newgeometry{
-    vmargin = 3.8cm,
-    hmargin = 3.2cm,
+    left = 2cm,
+    right = 2.5cm,
+    vmargin = 2.5cm,
   }%
   \begingroup
     \ctexset{
       chapter = {
-        format     = {\centering\sffamily\erhao},
-        beforeskip = 18bp,
-        afterskip  = 6bp,
-      },
-    }%
-    \bnu@chapter*[]{关于学位论文使用授权的说明}%
-    \thispagestyle{empty}%
-  \endgroup
-  \vskip 50bp%
-  \begingroup
-    \ctexset{
-      chapter = {
-        format     = {\centering\bfseries\xiaosi[1.95]},
+        format     = {\centering\bfseries
+        \fontsize{15.41bp}{26bp}\selectfont},
         beforeskip = 0bp,
         afterskip  = 35.6bp,
       },
     }%
-    \fontsize{14bp}{26bp}\selectfont
     \bnu@chapter*[]{北京师范大学学位论文原创性声明}%
     \xiaosi[1.95]
     本人郑重声明：%
@@ -2838,13 +2748,14 @@
     对本文的研究做出重要贡献的个人和集体，均已在文中以明确方式标明。%
     本人完全意识到本声明的法律结果由本人承担。\par
     \null\par
-    学位论文作者签名：\hfill 日期：年\hspace{3ex} 月\hspace{3ex} 日\par
+    学位论文作者签名：\hfill 日期：\hspace{5ex} 年\hspace{3ex} 月\hspace{3ex} 日\par
   \endgroup
   \vskip 34.5bp
   \begingroup
     \ctexset{
       chapter = {
-        format     = {\centering\bfseries\xiaosi[1.95]},
+        format     = {\centering\bfseries
+        \fontsize{15.41bp}{26bp}},
         beforeskip = 0bp,
         afterskip  = 35.6bp,
         break = {},
@@ -2858,19 +2769,12 @@
     保密的学位论文在解密后遵守此规定。\par
     \null\par
     \null\par
-    本人签名：\hfill 日期：\par
-    导师签名：\hfill 日期：\par
-  \endgroup
-  \vskip1.2cm%
-  \begingroup
-    \noindent\xiaosi
-    \hspace*{1.5cm}%
     作者签名：\bnu@underline[7em]\relax\hfill
-    导师签名：\bnu@underline[7em]\relax\hspace*{1cm}\\[3pt]%
-    \hspace*{1.5cm}%
-    日\hspace{2em}期：\bnu@underline[7em]\relax\hfill
-    日\hspace{2em}期：\bnu@underline[7em]\relax\hspace*{1cm}%
+    日期：\bnu@underline[7em]\relax\hspace*{1cm}\par%
+    导师签名：\bnu@underline[7em]\relax\hfill
+    日期：\bnu@underline[7em]\relax\hspace*{1cm}%
   \endgroup
+  \thispagestyle{empty}%
   \clearpage
   \restoregeometry
 }

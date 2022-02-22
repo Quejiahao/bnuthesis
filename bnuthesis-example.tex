@@ -2,7 +2,7 @@
 % !TeX program = xelatex
 % !TeX spellcheck = en_US
 
-\documentclass[degree=doctor]{bnuthesis}
+\documentclass[degree=master,degree-type=academic]{bnuthesis}
   % 学位 degree:
   %   doctor | master | bachelor | postdoc
   % 学位类型 degree-type:
@@ -30,7 +30,7 @@
 \copyrightpage
 % 将签字扫描后授权文件 scan-copyright.pdf 替换原始页面
 % \copyrightpage[file=scan-copyright.pdf]
-
+% \begin{comment}
 \frontmatter
 \input{data/abstract}
 
@@ -53,8 +53,6 @@
 \input{data/chap02}
 \input{data/chap03}
 \input{data/chap04}
-\subsection{a}
-\subsubsection{aa}
 
 
 % 其他部分
@@ -93,5 +91,5 @@
 
 % 本科生的综合论文训练记录表（扫描版）
 % \record{file=scan-record.pdf}
-
+% \end{comment}
 \end{document}
