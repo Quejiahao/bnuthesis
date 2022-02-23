@@ -1876,12 +1876,19 @@
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{3}
 \renewcommand\tableofcontents{%
+  \let\@evenheadbackup\@evenhead
+  \let\@oddheadbackup\@oddhead
   \ifbnu@degree@graduate
     \bnu@chapter*{\contentsname}%
+    \let\@evenhead\@empty%
+    \let\@oddhead\@empty%
   \else
     \bnu@chapter*[]{\contentsname}%
   \fi
   \@starttoc{toc}%
+  \clearpage
+  \let\@evenhead\@evenheadbackup
+  \let\@oddhead\@oddheadbackup
 }
 \bnu@define@key{
   toc-chapter-style = {
@@ -2847,6 +2854,8 @@
 }
 \newenvironment{abstract}{%
   \bnusetup{language = chinese}%
+  \renewcommand\headrulewidth{0pt}%
+  \fancyhead[C]{}%
   \ifbnu@degree@graduate
     \clearpage
     \begingroup
@@ -2914,6 +2923,8 @@
 }
 \newenvironment{abstract*}{%
   \bnusetup{language = english}%
+  \renewcommand\headrulewidth{0pt}%
+  \fancyhead[C]{}%
   \ifbnu@degree@graduate
     \clearpage
     {%
@@ -3144,25 +3155,52 @@
     {\bnu@chapter*{\csname list#1name\endcsname}\@starttoc{\csname ext@#1\endcsname}}%
 }
 \renewcommand\listoffigures{%
+  \let\@evenheadbackup\@evenhead
+  \let\@oddheadbackup\@oddhead
+  \ifbnu@degree@graduate
+    \let\@evenhead\@empty%
+    \let\@oddhead\@empty%
+  \fi
   \bnu@listof{figure}%
+  \clearpage
+  \let\@evenhead\@evenheadbackup
+  \let\@oddhead\@oddheadbackup
 }
 \titlecontents{figure}
   [\z@]{}
   {\contentspush{\figurename~\thecontentslabel\quad}}{}
   {\nobreak\bnu@leaders\nobreak\hfil\thecontentspage}
 \renewcommand\listoftables{%
+  \let\@evenheadbackup\@evenhead
+  \let\@oddheadbackup\@oddhead
+  \ifbnu@degree@graduate
+    \let\@evenhead\@empty%
+    \let\@oddhead\@empty%
+  \fi
   \bnu@listof{table}%
+  \clearpage
+  \let\@evenhead\@evenheadbackup
+  \let\@oddhead\@oddheadbackup
 }
 \titlecontents{table}
   [\z@]{}
   {\contentspush{\tablename~\thecontentslabel\quad}}{}
   {\bnu@leaders\thecontentspage}
 \newcommand\listoffiguresandtables{%
+  \let\@evenheadbackup\@evenhead
+  \let\@oddheadbackup\@oddhead
+  \ifbnu@degree@graduate
+    \let\@evenhead\@empty%
+    \let\@oddhead\@empty%
+  \fi
   \bnu@chapter*{\bnu@list@figure@table@name}%
   \@starttoc{lof}%
   \par
   \null\par
   \@starttoc{lot}%
+  \clearpage
+  \let\@evenhead\@evenheadbackup
+  \let\@oddhead\@oddheadbackup
 }
 \def\ext@equation{loe}
 \def\equcaption#1{%

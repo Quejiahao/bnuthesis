@@ -3815,12 +3815,19 @@
 % 目录生成命令。
 %    \begin{macrocode}
 \renewcommand\tableofcontents{%
+  \let\@evenheadbackup\@evenhead
+  \let\@oddheadbackup\@oddhead
   \ifbnu@degree@graduate
     \bnu@chapter*{\contentsname}%
+    \let\@evenhead\@empty%
+    \let\@oddhead\@empty%
   \else
     \bnu@chapter*[]{\contentsname}%
   \fi
   \@starttoc{toc}%
+  \clearpage
+  \let\@evenhead\@evenheadbackup
+  \let\@oddhead\@oddheadbackup
 }
 \bnu@define@key{
   toc-chapter-style = {
@@ -5003,6 +5010,8 @@
 %    \begin{macrocode}
 \newenvironment{abstract}{%
   \bnusetup{language = chinese}%
+  \renewcommand\headrulewidth{0pt}%
+  \fancyhead[C]{}%
   \ifbnu@degree@graduate
     \clearpage
     \begingroup
@@ -5081,6 +5090,8 @@
 %    \begin{macrocode}
 \newenvironment{abstract*}{%
   \bnusetup{language = english}%
+  \renewcommand\headrulewidth{0pt}%
+  \fancyhead[C]{}%
   \ifbnu@degree@graduate
     \clearpage
     {%
@@ -5356,7 +5367,16 @@
 % 插图清单。
 %    \begin{macrocode}
 \renewcommand\listoffigures{%
+  \let\@evenheadbackup\@evenhead
+  \let\@oddheadbackup\@oddhead
+  \ifbnu@degree@graduate
+    \let\@evenhead\@empty%
+    \let\@oddhead\@empty%
+  \fi
   \bnu@listof{figure}%
+  \clearpage
+  \let\@evenhead\@evenheadbackup
+  \let\@oddhead\@oddheadbackup
 }
 \titlecontents{figure}
   [\z@]{}
@@ -5371,7 +5391,16 @@
 % 附表清单。
 %    \begin{macrocode}
 \renewcommand\listoftables{%
+  \let\@evenheadbackup\@evenhead
+  \let\@oddheadbackup\@oddhead
+  \ifbnu@degree@graduate
+    \let\@evenhead\@empty%
+    \let\@oddhead\@empty%
+  \fi
   \bnu@listof{table}%
+  \clearpage
+  \let\@evenhead\@evenheadbackup
+  \let\@oddhead\@oddheadbackup
 }
 \titlecontents{table}
   [\z@]{}
@@ -5385,11 +5414,20 @@
 % 将插图和附表合在一起列出“插图和附表清单”。
 %    \begin{macrocode}
 \newcommand\listoffiguresandtables{%
+  \let\@evenheadbackup\@evenhead
+  \let\@oddheadbackup\@oddhead
+  \ifbnu@degree@graduate
+    \let\@evenhead\@empty%
+    \let\@oddhead\@empty%
+  \fi
   \bnu@chapter*{\bnu@list@figure@table@name}%
   \@starttoc{lof}%
   \par
   \null\par
   \@starttoc{lot}%
+  \clearpage
+  \let\@evenhead\@evenheadbackup
+  \let\@oddhead\@oddheadbackup
 }
 %    \end{macrocode}
 % \end{macro}
