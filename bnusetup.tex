@@ -169,16 +169,16 @@
 \graphicspath{{figures/}}
 
 % 数学命令
-\makeatletter
+% \makeatletter
 \newcommand\dif{%  % 微分符号
   \mathop{}\!%
-  \ifbnu@math@style@TeX
-    d%
-  \else
-    \mathrm{d}%
-  \fi
+  % \ifbnu@math@style@TeX
+  %   d%
+  % \else
+  \mathrm{d}%
+  % \fi
 }
-\makeatother
+% \makeatother
 
 % 算法环境
 \usepackage{algorithm}

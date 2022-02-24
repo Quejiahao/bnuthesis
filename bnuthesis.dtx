@@ -14,7 +14,7 @@
 %
 % \iffalse
 %<*driver>
-\ProvidesFile{bnuthesis.dtx}[2022/01/24 0.0.3 Beijing Normal University Thesis Template]
+\ProvidesFile{bnuthesis.dtx}[2022/02/24 0.0.4 Beijing Normal University Thesis Template]
 \documentclass{ltxdoc}
 \usepackage{dtx-style}
 
@@ -1250,7 +1250,7 @@
 %    \begin{macrocode}
 %<cls>\NeedsTeXFormat{LaTeX2e}[2020/10/01]
 %<cls>\ProvidesClass{bnuthesis}
-%<cls>[2022/01/24 0.0.3 Beijing Normal University Thesis Template]
+%<cls>[2022/02/24 0.0.4 Beijing Normal University Thesis Template]
 %    \end{macrocode}
 %
 % 报错
@@ -1306,7 +1306,7 @@
 %<*cls>
 \hyphenation{Bnu-Thesis}
 \def\bnuthesis{BnuThesis}
-\def\version{0.0.3}
+\def\version{0.0.4}
 \RequirePackage{kvdefinekeys}
 \RequirePackage{kvsetkeys}
 \RequirePackage{kvoptions}
@@ -1968,7 +1968,7 @@
       \ifbnu@degree@graduate
         \def\contentsname{目\quad 录}%
         \def\bnu@denotation@name{符号和缩略语说明}%
-        \def\bnu@resume@name{个人简历、在学期间完成的相关学术成果}%
+        \def\bnu@resume@name{学术成果}% 个人简历、在学期间完成的相关
       \else  % degree = postdoc
         \def\contentsname{目\qquad 次}%
         \def\bnu@denotation@name{符号表}%
@@ -4269,16 +4269,16 @@
 % \myentry{研究生中文封面}
 % 《写作指南》规定中文封面页边距：
 % 上—6. 0 厘米，下—5.5 厘米，左—4.0 厘米，右—4.0 厘米，装订线 0 厘米。
-% 然而作为事实标准的 Word 模板的页边距是上下 6.0 厘米，左右 4.0 厘米。
+% 然而作为事实标准的 Word 模板的页边距是上下 2.1 厘米，左右 3.17 厘米。
 % 这里缩小上边距以方便排版保密信息。
 %    \begin{macrocode}
 \newcommand\bnu@titlepage@graduate@cover{%
   \newgeometry{
-    vmargin = 2.1cm,
+    top = 1.4148cm,
+    bottom = 3.3981cm,
     hmargin = 3.17cm,
   }%
   \thispagestyle{empty}%
-  \null\vskip 8.1pt%
   \begingroup
     \centering
     \parbox[t][2cm][t]{\textwidth}{%
@@ -4286,9 +4286,9 @@
       \bnu@titlepage@secret
     }\par
     \includegraphics[scale=1.273]{bnu-name-graduate.pdf}%
-    \vskip 24.1pt%
+    \vskip 3.85bp%
     \bnu@titlepage@degree
-    \vskip 40.5pt%
+    \vskip 94.105bp%
     \begingroup
       \bfseries\heiti\xiaoer
       \parindent=0bp%
@@ -4304,7 +4304,7 @@
       \vskip -9.2pt%
     \fi
     \vfill
-    \parbox[t][10cm][t]{\textwidth}{%
+    \parbox[t][9.776cm][t]{\textwidth}{%
       \centering\bfseries\songti\xiaosan
       \bnu@titlepage@info
     }\par
@@ -4396,23 +4396,25 @@
 %    \begin{macrocode}
 \newcommand\bnu@titlepage@degree{%
   \begingroup
-    \CJKfamily+{}\bfseries\heiti\fontsize{45bp}{45bp}\selectfont%
+    \CJKfamily+{}\bfseries\heiti\fontsize{45bp}{62.53bp}\selectfont%
     \def\CJKglue{\hskip 1bp}%
     \ifbnu@thesis@type@thesis
-      \ifbnu@degree@type@professional
-        专业%
-      \else
-        学术%
-      \fi
-      \ifbnu@degree@doctor
-        博士%
-      \else
-        \ifbnu@degree@master
-          硕士%
+      \bnu@stretch{7.5550em}{%
+        \ifbnu@degree@type@professional
+          专业%
+        \else
+          学术%
         \fi
-      \fi
-      研究生\\
-      学位论文%
+        \ifbnu@degree@doctor
+          博士%
+        \else
+          \ifbnu@degree@master
+            硕士%
+          \fi
+        \fi
+        研究生%
+      }\\
+      \bnu@stretch{4.3em}{学位论文}%
     \else
       \ifbnu@thesis@type@proposal
         (北京师范大学%
@@ -4870,11 +4872,6 @@
 \newcommand{\bnu@authorization@frontdate}{%
   日\ifbnu@degree@bachelor\hspace{1em}\else\hspace{2em}\fi 期：}
 \newcommand\bnu@copyright@page@graduate{%
-  \newgeometry{
-    left = 2cm,
-    right = 2.5cm,
-    vmargin = 2.5cm,
-  }%
   \begingroup
     \ctexset{
       chapter = {
@@ -4892,9 +4889,13 @@
     对本文的研究做出重要贡献的个人和集体，均已在文中以明确方式标明。%
     本人完全意识到本声明的法律结果由本人承担。\par
     \null\par
-    学位论文作者签名：\hfill 日期：\hspace{5ex} 年\hspace{3ex} 月\hspace{3ex} 日\par
+    \null\par
+    学位论文作者签名：\hfill 日期：\hspace*{3em}年\hspace*{2em}月\hspace*{2em}日\hspace*{2em}%
+    \par
   \endgroup
-  \vskip 34.5bp
+  \null\par
+  \null\par
+  \null\par
   \begingroup
     \ctexset{
       chapter = {
@@ -4913,10 +4914,10 @@
     保密的学位论文在解密后遵守此规定。\par
     \null\par
     \null\par
-    作者签名：\bnu@underline[7em]\relax\hfill
-    日期：\bnu@underline[7em]\relax\hspace*{1cm}\par%
-    导师签名：\bnu@underline[7em]\relax\hfill
-    日期：\bnu@underline[7em]\relax\hspace*{1cm}%
+    作者签名：\bnu@CJKunderline[10em]\relax\hfill
+    日期：\bnu@CJKunderline[10em]\relax\hspace*{2em}\par%
+    导师签名：\bnu@CJKunderline[10em]\relax\hfill
+    日期：\bnu@CJKunderline[10em]\relax\hspace*{2em}%
   \endgroup
   \thispagestyle{empty}%
   \clearpage
@@ -5094,11 +5095,10 @@
   \fancyhead[C]{}%
   \ifbnu@degree@graduate
     \clearpage
-    {%
-      \sanhao%
-      \parbox[c][0cm][c]{\textwidth - 10ex}{%
-        \centering\bnu@title@en\par%
-      }%
+    \centerline{%
+      \begin{minipage}[c]{\textwidth - 10ex}
+        \centering\bfseries\sanhao\bnu@title@en\par%
+      \end{minipage}
     }%
     \ctexset{%
       chapter = {
@@ -5235,6 +5235,21 @@
       \bnu@format@date{\bnu@date@zh@digit@short}{\bnu@date}
     \end{minipage}
     \clearpage
+  \else
+    \ifbnu@degree@graduate
+      \par
+      \hfill
+      {%
+        \sihao
+        \begin{minipage}{5.17em}
+          \centering
+          \heiti\sihao
+          \bnu@author\\
+          \bnu@format@date{\bnu@date@zh@digit@short}{\bnu@date}%
+        \end{minipage}
+      }
+      \clearpage
+    \fi
   \fi
 }
 %    \end{macrocode}

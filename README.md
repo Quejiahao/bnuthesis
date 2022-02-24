@@ -1,4 +1,4 @@
-修改自 [**ThuThesis v7.2.1**](https://github.com/tuna/thuthesis/tree/1971191972d5cbe826a4d208539465e33f01927d)，以下是原始 README，**使用时需要将 thu 改为 bnu**，目前只修改了本科生中文部分，并未正在修改研究生中文部分。我不完全按照模板和规范来，因为模板和规范本身有极其不和谐的地方。
+修改自 [**ThuThesis v7.2.1**](https://github.com/tuna/thuthesis/tree/1971191972d5cbe826a4d208539465e33f01927d)，以下是原始 README，**使用时需要将 thu 改为 bnu**，目前只修改了本硕博中文非涉密部分。我不完全按照模板和规范来，因为模板和规范本身有极其不和谐的地方。
 
 [![Actions Status](https://github.com/tuna/thuthesis/workflows/Test/badge.svg)](https://github.com/tuna/thuthesis/actions)
 [![GitHub downloads](https://img.shields.io/github/downloads/tuna/thuthesis/total)](https://github.com/tuna/thuthesis/releases)
