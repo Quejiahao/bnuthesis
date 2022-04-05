@@ -64,9 +64,9 @@ FUNCTION {load.config}
   #3 'bibliography.et.al.use.first :=
   #0 'uppercase.name :=
   #0 'terms.in.macro :=
-  #1 'year.after.author :=
+  #0 'year.after.author :=
   #1 'period.after.author :=
-  #1 'sentence.case.title :=
+  #0 'sentence.case.title :=
   #0 'link.title :=
   #1 'title.in.journal :=
   #1 'show.mark :=
@@ -735,9 +735,7 @@ FUNCTION {output.bibitem}
 
 FUNCTION {change.sentence.case}
 { entry.lang lang.en =
-    { 
-      % "t" change.case$ 
-    }
+    { "t" change.case$ }
     'skip$
   if$
 }
