@@ -8,7 +8,7 @@
 %% 
 %% This is a generated file.
 %% 
-%% Copyright (C) 2005-2022 by Tsinghua University TUNA Association <tuna@tsinghua.edu.cn>
+%% Copyright (C) 2005-2023 by Tsinghua University TUNA Association <tuna@tsinghua.edu.cn>
 %% 
 %% This work may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License, either version 1.3c
@@ -23,7 +23,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \ProvidesClass{bnuthesis}
-[2022/04/05 0.0.5 Beijing Normal University Thesis Template]
+[2023/03/30 0.0.5 Beijing Normal University Thesis Template]
 \newcommand\bnu@error[1]{%
   \ClassError{bnuthesis}{#1}{}%
 }
@@ -2875,7 +2875,7 @@
       \fi
       \bnu@chapter{\bnu@abstract@name}%
     \endgroup
-    \xiaosi
+    \xiaosi[2.09]
   \else
     \ifbnu@degree@bachelor
       \clearpage
@@ -2941,7 +2941,7 @@
       }
     }%
     \bnu@chapter{\bnu@abstract@name@en}%
-    \xiaosi%
+    \xiaosi[2.09]%
     \ctexset{autoindent=4ex}%
   \else
     \ifbnu@degree@bachelor
