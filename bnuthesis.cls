@@ -3251,6 +3251,7 @@
   \bnu@option@hook{cite-style}{\@nameuse{bibstyle@\bnu@cite@style}}
   \@namedef{bibstyle@bnuthesis-numeric}{\citestyle{super}}
   \@namedef{bibstyle@bnuthesis-author-year}{\citestyle{author-year}}
+  \@namedef{bibstyle@bnuthesis-author-year-bnu}{\citestyle{super}}
   \@namedef{bibstyle@bnuthesis-bachelor}{\citestyle{super}}
   \@namedef{bibstyle@bnuthesis-inline}{\citestyle{inline}}
   \renewcommand\NAT@citesuper[3]{\ifNAT@swa
