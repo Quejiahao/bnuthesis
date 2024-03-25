@@ -5560,8 +5560,8 @@
 %    \begin{macrocode}
   \renewcommand\NAT@citenum%
       [3]{\ifNAT@swa\NAT@@open\if*#2*\else#2\NAT@spacechar\fi
-          % #1\if*#3*\else\NAT@cmt#3\fi\NAT@@close\else#1\fi\endgroup}
-          #1\NAT@@close\textsuperscript{\if*#3*\else#3\fi}\else#1\fi\endgroup}
+          #1\if*#3*\else\NAT@cmt#3\fi\NAT@@close\else#1\fi\endgroup}
+          % #1\NAT@@close\textsuperscript{\if*#3*\else#3\fi}\else#1\fi\endgroup}
 %    \end{macrocode}
 %
 % 修改 \cs{citet} 引用的样式。
