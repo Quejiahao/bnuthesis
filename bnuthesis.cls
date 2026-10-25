@@ -8,7 +8,7 @@
 %% 
 %% This is a generated file.
 %% 
-%% Copyright (C) 2005-2024 by Tsinghua University TUNA Association <tuna@tsinghua.edu.cn>
+%% Copyright (C) 2005-2026 by Tsinghua University TUNA Association <tuna@tsinghua.edu.cn>
 %% 
 %% This work may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License, either version 1.3c
@@ -966,7 +966,7 @@
   ]%
   \setCJKfamilyfont{zhsong}{Noto Serif CJK SC}[
     UprightFont    = * Light,
-    UprightFont    = * Bold,
+    BoldFont       = * Bold,
     Script         = CJK,
   ]%
   \setCJKfamilyfont{zhhei}{Noto Sans CJK SC}[
@@ -2222,7 +2222,7 @@
       \hskip -21.5pt%
       \bnu@titlepage@secret
     }\par
-    \includegraphics[scale=1.273]{bnu-name-graduate.pdf}%
+    \includegraphics[scale=1.273]{bnu-name-black.pdf}%
     \vskip 3.85bp%
     \bnu@titlepage@degree
     \vskip 94.105bp%
@@ -2244,9 +2244,6 @@
     \parbox[t][9.776cm][t]{\textwidth}{%
       \centering\bfseries\songti\xiaosan
       \bnu@titlepage@info
-    }\par
-    {%
-      \bfseries\CJKfamily+{}\heiti\sanhao\bnu@fixed@box{10.3307em}{北京师范大学学位办}%
     }\par
   \endgroup
   \clearpage
@@ -2530,7 +2527,7 @@
   \vfill
   \begingroup
     \centering
-    \includegraphics[scale=1.13]{bnu-name-bachelor.pdf}%
+    \includegraphics[scale=1.13]{bnu-name-black.pdf}%
     \vskip 0.35cm%
     {\bfseries\xiaochu\ziju{0.11}本科生毕业论文（设计）\par}%
   \endgroup
@@ -2744,7 +2741,7 @@
         afterskip  = 35.6bp,
       },
     }%
-    \bnu@chapter*[]{北京师范大学学位论文原创性声明}%
+    \bnu@chapter*[]{北京师范大学研究生学位论文原创性声明}%
     \xiaosi[1.95]
     本人郑重声明：%
     所呈交的学位论文，是本人在导师的指导下，独立进行研究工作所取得的成果。%
@@ -2769,15 +2766,15 @@
         break = {},
       },
     }%
-    \bnu@chapter[]{关于论文使用授权的说明}%
+    \bnu@chapter[]{北京师范大学研究生学位论文使用授权书}%
     学位论文作者完全了解北京师范大学有关保留和使用学位论文的规定，即：%
     研究生在校攻读学位期间论文工作的知识产权单位属北京师范大学。%
     学校有权保留并向国家有关部门或机构送交论文的复印件和电子版，允许学位论文被查阅和借阅；%
     学校可以公布学位论文的全部或部分内容，可以允许采用影印、缩印或其它复制手段保存、汇编学位论文。%
-    保密的学位论文在解密后遵守此规定。\par
+    保密的学位论文在解密后适用于本授权书。\par
     \null\par
     \null\par
-    作者签名：\bnu@CJKunderline[10em]\relax\hfill
+    本人签名：\bnu@CJKunderline[10em]\relax\hfill
     日期：\bnu@CJKunderline[10em]\relax\hspace*{2em}\par%
     导师签名：\bnu@CJKunderline[10em]\relax\hfill
     日期：\bnu@CJKunderline[10em]\relax\hspace*{2em}%

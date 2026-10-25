@@ -168,8 +168,7 @@
 % bnuthesis-*.bst & \hologo{BibTeX} 参考文献表样式文件\\
 % bnuthesis-*.bbx & BibLaTeX 参考文献表样式文件\\
 % bnuthesis-*.cbx & BibLaTeX 参考文献引用样式文件\\
-% bnu-name-bachelor.pdf & 校名 logo，本科生封面使用 \\\midrule
-% bnu-name-graduate.pdf & 校名 logo，研究生封面使用 \\\midrule
+% bnu-name-black.pdf & 校名 logo，黑色 \\\midrule
 % bnuthesis-example.tex & 示例文档主文件\\
 % spine.tex & 书脊示例文档\\
 % ref/ & 示例文档参考文献目录\\
@@ -274,7 +273,7 @@
 % \subsection{升级}
 % \label{sec:upgrade}
 % 如果需要升级 \bnuthesis{}，应当从 GitHub 下载最新的版本，
-% 将 \file{bnuthesis.dtx}，\file{bnuthesis.ins}，\file{bnu-name-bachelor.pdf}，\file{bnu-name-graduate.pdf} 和
+% 将 \file{bnuthesis.dtx}，\file{bnuthesis.ins}，\file{bnu-name-black.pdf} 和
 % \file{bnuthesis-*.bst} 拷贝至工作目录覆盖相应的文件，然后按照
 % 第~\ref{sec:generate-cls} 节的内容生成新的模板和使用说明。
 %
@@ -289,7 +288,7 @@
 % \subsection{示例文件}
 % \label{sec:userguide}
 %
-% 模板核心文件有：\file{bnuthesis.cls}，\file{bnu-name-bachelor.pdf}，\file{bnu-name-graduate.pdf},
+% 模板核心文件有：\file{bnuthesis.cls}，\file{bnu-name-black.pdf}，
 % \file{bnuthesis-*.bst}（\hologo{BibTeX}），
 % \file{bnuthesis-*.bbx} 和 \file{bnuthesis-*.cbx}（BibLaTeX），
 % 但如果没有示例文档会较难下手，所以推荐从模板自带的示例文档入手。其中包括了论文
@@ -2601,7 +2600,7 @@
   ]%
   \setCJKfamilyfont{zhsong}{Noto Serif CJK SC}[
     UprightFont    = * Light,
-    UprightFont    = * Bold,
+    BoldFont       = * Bold,
     Script         = CJK,
   ]%
   \setCJKfamilyfont{zhhei}{Noto Sans CJK SC}[
@@ -4285,7 +4284,7 @@
       \hskip -21.5pt%
       \bnu@titlepage@secret
     }\par
-    \includegraphics[scale=1.273]{bnu-name-graduate.pdf}%
+    \includegraphics[scale=1.273]{bnu-name-black.pdf}%
     \vskip 3.85bp%
     \bnu@titlepage@degree
     \vskip 94.105bp%
@@ -4307,9 +4306,6 @@
     \parbox[t][9.776cm][t]{\textwidth}{%
       \centering\bfseries\songti\xiaosan
       \bnu@titlepage@info
-    }\par
-    {%
-      \bfseries\CJKfamily+{}\heiti\sanhao\bnu@fixed@box{10.3307em}{北京师范大学学位办}%
     }\par
   \endgroup
   \clearpage
@@ -4642,7 +4638,7 @@
   \vfill
   \begingroup
     \centering
-    \includegraphics[scale=1.13]{bnu-name-bachelor.pdf}%
+    \includegraphics[scale=1.13]{bnu-name-black.pdf}%
     \vskip 0.35cm%
     {\bfseries\xiaochu\ziju{0.11}本科生毕业论文（设计）\par}%
   \endgroup
@@ -4881,7 +4877,7 @@
         afterskip  = 35.6bp,
       },
     }%
-    \bnu@chapter*[]{北京师范大学学位论文原创性声明}%
+    \bnu@chapter*[]{北京师范大学研究生学位论文原创性声明}%
     \xiaosi[1.95]
     本人郑重声明：%
     所呈交的学位论文，是本人在导师的指导下，独立进行研究工作所取得的成果。%
@@ -4906,15 +4902,15 @@
         break = {},
       },
     }%
-    \bnu@chapter[]{关于论文使用授权的说明}%
+    \bnu@chapter[]{北京师范大学研究生学位论文使用授权书}%
     学位论文作者完全了解北京师范大学有关保留和使用学位论文的规定，即：%
     研究生在校攻读学位期间论文工作的知识产权单位属北京师范大学。%
     学校有权保留并向国家有关部门或机构送交论文的复印件和电子版，允许学位论文被查阅和借阅；%
     学校可以公布学位论文的全部或部分内容，可以允许采用影印、缩印或其它复制手段保存、汇编学位论文。%
-    保密的学位论文在解密后遵守此规定。\par
+    保密的学位论文在解密后适用于本授权书。\par
     \null\par
     \null\par
-    作者签名：\bnu@CJKunderline[10em]\relax\hfill
+    本人签名：\bnu@CJKunderline[10em]\relax\hfill
     日期：\bnu@CJKunderline[10em]\relax\hspace*{2em}\par%
     导师签名：\bnu@CJKunderline[10em]\relax\hfill
     日期：\bnu@CJKunderline[10em]\relax\hspace*{2em}%
