@@ -2690,8 +2690,16 @@
   \providecommand\fangsong{\CJKfamily{zhfs}}
   \providecommand\kaishu{\CJKfamily{zhkai}}
 \fi
+% 已应用相同预设时，不重复定义字体族；切换预设时仍重新加载。
+% xeCJK 全局定义字体族，因此加载记录也使用全局作用域。
+\let\bnu@cjk@font@loaded\@empty
 \newcommand\bnu@set@cjk@font{%
-  \@nameuse{bnu@set@cjk@font@\bnu@cjk@font}%
+  \ifx\bnu@cjk@font\bnu@cjk@font@loaded\else
+    \@ifundefined{bnu@set@cjk@font@\bnu@cjk@font}{}{%
+      \@nameuse{bnu@set@cjk@font@\bnu@cjk@font}%
+      \global\let\bnu@cjk@font@loaded\bnu@cjk@font
+    }%
+  \fi
 }
 \bnu@set@cjk@font
 \bnu@option@hook{cjk-font}{\bnu@set@cjk@font}

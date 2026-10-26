@@ -1051,8 +1051,14 @@
   \providecommand\fangsong{\CJKfamily{zhfs}}
   \providecommand\kaishu{\CJKfamily{zhkai}}
 \fi
+\let\bnu@cjk@font@loaded\@empty
 \newcommand\bnu@set@cjk@font{%
-  \@nameuse{bnu@set@cjk@font@\bnu@cjk@font}%
+  \ifx\bnu@cjk@font\bnu@cjk@font@loaded\else
+    \@ifundefined{bnu@set@cjk@font@\bnu@cjk@font}{}{%
+      \@nameuse{bnu@set@cjk@font@\bnu@cjk@font}%
+      \global\let\bnu@cjk@font@loaded\bnu@cjk@font
+    }%
+  \fi
 }
 \bnu@set@cjk@font
 \bnu@option@hook{cjk-font}{\bnu@set@cjk@font}
