@@ -2,7 +2,11 @@
     "latex-workshop.intellisense.package.enabled": true,
     "latex-workshop.intellisense.unimathsymbols.enabled": true,
     "latex-workshop.latex.autoBuild.run": "onSave",
-    "latex-workshop.latex.build.forceRecipeUsage": true,
+    "latex-workshop.latex.build.enableMagicComments": false,
+    "latex-workshop.latex.recipe.default": "latexmk for bnuthesis",
+    "latex-workshop.latex.search.rootFiles.include": [
+        "bnuthesis-example.tex"
+    ],
     "latex-workshop.latex.recipes": [
         {
             "name": "latexmk for bnuthesis",
@@ -20,9 +24,10 @@
         {
             "name": "latexmk for bnuthesis doc",
             "tools": [
+                "xetex-bnuthesis",
                 "latexmk-xelatex-bnuthesis"
             ]
-        },
+        }
     ],
     "latex-workshop.latex.tools": [
         {
@@ -31,9 +36,10 @@
             "args": [
                 "-file-line-error",
                 "-halt-on-error",
-                "-interaction=nonstopmode",
-                "bnuthesis.ins"
+                "-interaction=batchmode",
+                "%DIR%/bnuthesis.ins"
             ],
+            "cwd": "%DIR%",
             "env": {}
         },
         {
@@ -48,8 +54,9 @@
                 "-pv-",
                 "-pvc-",
                 "-outdir=%OUTDIR%",
-                "%DOC%"
+                "%DOC_EXT%"
             ],
+            "cwd": "%DIR%",
             "env": {}
         },
         {
@@ -64,14 +71,18 @@
                 "-pv-",
                 "-pvc-",
                 "-outdir=%OUTDIR%",
-                "bnuthesis.dtx"
+                "%DIR%/bnuthesis.dtx"
             ],
+            "cwd": "%DIR%",
             "env": {}
         },
         {
             "name": "make-thesis",
             "command": "make",
-            "args": [],
+            "args": [
+                "thesis"
+            ],
+            "cwd": "%DIR%",
             "env": {}
         }
     ]

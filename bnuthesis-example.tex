@@ -11,7 +11,8 @@
   %   chinese（默认）| english
   % 字体库 fontset
   %   windows | mac | fandol | ubuntu
-  % 研究生院建议终版使用 Windows 平台的字体编译
+  % 2026 年编写规则要求中文宋体、标题黑体，英文 Times New Roman。
+  % 终稿应核对实际字体及培养单位的补充要求。
 
 
 % 论文基本配置，加载宏包等全局配置
@@ -22,9 +23,6 @@
 
 % 封面
 \maketitle
-
-% 学位论文指导小组、公开评阅人和答辩委员会名单
-% \input{data/committee}
 
 % 使用授权的说明
 \copyrightpage
@@ -38,14 +36,12 @@
 % 目录
 \tableofcontents
 
-% 插图和附表清单
-% 本科生的插图索引和表格索引需要移至正文之后、参考文献前
-\listoffiguresandtables  % 插图和附表清单
-% \listoffigures           % 插图清单
-% \listoftables            % 附表清单
+% 图表较多时分别列出清单，置于目录之后。
+\listoffigures
+\listoftables
 
-% 符号对照表
-% \input{data/denotation}
+% 符号数量不多时可以省略，本例保留以演示格式。
+\input{data/denotation}
 
 
 % 正文部分
@@ -54,6 +50,7 @@
 \input{data/chap02}
 \input{data/chap03}
 \input{data/chap04}
+\input{data/conclusion}
 
 
 % 其他部分
@@ -65,32 +62,18 @@
 
 % 附录
 \appendix
-% \input{data/appendix-survey}       % 本科生：外文资料的调研阅读报告
-% \input{data/appendix-translation}  % 本科生：外文资料的书面翻译
 \input{data/appendix}
 
-% 个人简历、在学期间完成的相关学术成果
+% 索引为可选部分。本例演示主题条目与页码引用，不需要时注释下一行。
+\input{data/index}
+
+% 攻读学位期间取得的学位论文相关成果
 \input{data/resume}
 
 % 致谢
 \input{data/acknowledgements}
 
-% 声明
-% \statement
-% 生成的声明页是否要插入页眉和页脚（默认 empty）
-% 仅在需要进行电子签名时，才需要打开这一选项
-% 插入的扫描声明页总是会生成页眉（研究生）和页脚，不受这一选项影响
-% \statement[page-style=plain]
-% 将签字扫描后的声明文件 scan-statement.pdf 替换原始页面
-% \statement[file=scan-statement.pdf]
-
-% 指导教师/指导小组学术评语
-% \input{data/comments}
-
-% 答辩委员会决议书
-% \input{data/resolution}
-
-% 本科生的综合论文训练记录表（扫描版）
-% \record{file=scan-record.pdf}
+% 答辩委员会名单位于致谢之后，使用正式名单替换占位信息。
+\input{data/committee}
 
 \end{document}

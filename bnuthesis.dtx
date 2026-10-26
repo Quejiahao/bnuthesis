@@ -14,7 +14,7 @@
 %
 % \iffalse
 %<*driver>
-\ProvidesFile{bnuthesis.dtx}[2023/03/30 0.0.5 Beijing Normal University Thesis Template]
+\ProvidesFile{bnuthesis.dtx}[2023/03/30 0.0.6 Beijing Normal University Thesis Template]
 \documentclass{ltxdoc}
 \usepackage{dtx-style}
 
@@ -1249,7 +1249,7 @@
 %    \begin{macrocode}
 %<cls>\NeedsTeXFormat{LaTeX2e}[2020/10/01]
 %<cls>\ProvidesClass{bnuthesis}
-%<cls>[2023/03/30 0.0.5 Beijing Normal University Thesis Template]
+%<cls>[2023/03/30 0.0.6 Beijing Normal University Thesis Template]
 %    \end{macrocode}
 %
 % 报错
@@ -1305,7 +1305,7 @@
 %<*cls>
 \hyphenation{Bnu-Thesis}
 \def\bnuthesis{BnuThesis}
-\def\version{0.0.5}
+\def\version{0.0.6}
 \RequirePackage{kvdefinekeys}
 \RequirePackage{kvsetkeys}
 \RequirePackage{kvoptions}
@@ -1642,6 +1642,19 @@
 \bnu@option@hook{degree}{%
   \bnu@set@graduate
 }
+% 2026 版编写规则仅用于以中文为主撰写的硕士、博士学位论文。
+% 使用主语言判断，避免英文摘要的局部语言切换改变论文的格式方案。
+\newcommand\bnu@if@graduate@chinese{%
+  \ifbnu@degree@graduate
+    \ifbnu@main@language@chinese
+      \expandafter\expandafter\expandafter\@firstoftwo
+    \else
+      \expandafter\expandafter\expandafter\@secondoftwo
+    \fi
+  \else
+    \expandafter\@secondoftwo
+  \fi
+}
 %    \end{macrocode}
 %
 % 设置默认 \option{openany}。
@@ -1855,9 +1868,8 @@
 % \subsection{页面设置}
 % \label{sec:layout}
 %
-% 研究生《北京师范大学学位论文撰写规则》：
-% 页边距：上左：2.5 厘米，下右：2.0 厘米，装订线 0 厘米；
-% 页眉距边界：2.2 厘米，页脚距边界：2.2 厘米。
+% 研究生《北京师范大学研究生学位论文编写规则（2026版）》：
+% 中文硕博论文内页上下边距 2.54 厘米，左右边距 3.17 厘米。
 %
 % 《本科生毕业论文写作规范》：
 % 页边距：上左：2.5 厘米，下右：2.0 厘米。
@@ -1894,12 +1906,18 @@
     \fi
   \else
     \ifbnu@degree@graduate
-      \geometry{
-        top        = 2.5cm,
-        bottom     = 2.0cm,
-        left       = 2.5cm,
-        right      = 2.0cm,
-        headheight = 0.5cm,
+      \bnu@if@graduate@chinese{%
+        \geometry{
+          top = 2.54cm, bottom = 2.54cm,
+          left = 3.17cm, right = 3.17cm,
+          headheight = 0.5cm,
+        }%
+      }{%
+        \geometry{
+          top = 2.5cm, bottom = 2.0cm,
+          left = 2.5cm, right = 2.0cm,
+          headheight = 0.5cm,
+        }%
       }%
     \else
       \geometry{
@@ -1914,6 +1932,15 @@
 \bnu@set@geometry
 \bnu@option@hook{degree}{\bnu@set@geometry}
 \bnu@option@hook{output}{\bnu@set@geometry}
+\bnu@option@hook{main-language}{%
+  \bnu@set@geometry
+  % 主语言在导言区切换后，fancyhdr 已缓存的宽度也须跟随版心恢复。
+  \@ifundefined{headwidth}{}{%
+    \ifdim\headwidth>\z@
+      \setlength\headwidth{\textwidth}%
+    \fi
+  }%
+}
 %    \end{macrocode}
 %
 %
@@ -1966,8 +1993,8 @@
       \def\bnu@acknowledgements@name{致\quad 谢}%
       \ifbnu@degree@graduate
         \def\contentsname{目\quad 录}%
-        \def\bnu@denotation@name{符号和缩略语说明}%
-        \def\bnu@resume@name{学术成果}% 个人简历、在学期间完成的相关
+        \def\bnu@denotation@name{主要符号对照表}%
+        \def\bnu@resume@name{攻读学位期间取得的学位论文相关成果}%
       \else  % degree = postdoc
         \def\contentsname{目\qquad 次}%
         \def\bnu@denotation@name{符号表}%
@@ -3114,7 +3141,7 @@
     \clearpage
   \fi
   \@mainmatterfalse
-  \bnusetup{toc-depth = 0}%
+  \bnu@if@graduate@chinese{}{\bnusetup{toc-depth = 0}}%
 }
 %    \end{macrocode}
 % \end{macro}
@@ -3172,16 +3199,20 @@
     \fancyfoot[C]{\wuhao\thepage}%
     \let\@mkboth\markboth
     \def\chaptermark##1{%
-      \markboth{%
-        \CTEXifname{%
-          \CTEXthechapter
-          \ifbnu@main@language@chinese
-            \quad
-          \else
-            \space
-          \fi
-        }{}##1%
-      }{}%
+      \bnu@if@graduate@chinese{%
+        \markboth{##1}{}%
+      }{%
+        \markboth{%
+          \CTEXifname{%
+            \CTEXthechapter
+            \ifbnu@main@language@chinese
+              \quad
+            \else
+              \space
+            \fi
+          }{}##1%
+        }{}%
+      }%
     }%
   \fi
   \let\sectionmark\@gobble
@@ -3219,6 +3250,10 @@
 \bnu@set@indent
 \bnu@option@hook{degree}{\bnu@set@indent}
 \bnu@option@hook{main-language}{\bnu@set@indent}
+% 2026 版要求正文段前、段后均为零；固定行距由 \normalsize 提供。
+\AtBeginDocument{%
+  \bnu@if@graduate@chinese{\setlength\parskip{0bp}}{}%
+}
 %    \end{macrocode}
 %
 % 设置 url 样式，与上下文一致
@@ -3309,6 +3344,10 @@
     % 序号取消上标
     \def\@makefnmark{\hbox{\normalfont\@thefnmark}}%
     \xiaowu
+    \bnu@if@graduate@chinese{%
+      \songti\fontsize{9bp}{11.7bp}\selectfont
+      \setlength\parskip{0bp}%
+    }{}%
     \ifFN@hangfoot
       \bgroup
       \setbox\@tempboxa\hbox{%
@@ -3324,7 +3363,8 @@
       \advance \linewidth -\leftmargin
       \parshape \@ne \leftmargin \linewidth
       % \footnotesize
-      \xiaowu
+      \bnu@if@graduate@chinese
+        {\songti\fontsize{9bp}{11.7bp}\selectfont}{\xiaowu}%
       \@setpar{{\@@par}}%
       \leavevmode
       \llap{\box\@tempboxa}%
@@ -3357,6 +3397,25 @@
 % 允许太长的公式断行、分页等。
 %    \begin{macrocode}
 \allowdisplaybreaks[4]
+% 中文硕博论文的多行公式局部增加半个正文基线的行间留白。
+% amsmath 仍按每行公式的实际高度排版，分式、根式不会被固定高度裁切。
+\newcommand\bnu@set@math@lineskip{%
+  \bnu@if@graduate@chinese{\setlength\jot{0.5\baselineskip}}{}%
+}
+\AtBeginEnvironment{align}{\bnu@set@math@lineskip}
+\AtBeginEnvironment{align*}{\bnu@set@math@lineskip}
+\AtBeginEnvironment{flalign}{\bnu@set@math@lineskip}
+\AtBeginEnvironment{flalign*}{\bnu@set@math@lineskip}
+\AtBeginEnvironment{alignat}{\bnu@set@math@lineskip}
+\AtBeginEnvironment{alignat*}{\bnu@set@math@lineskip}
+\AtBeginEnvironment{gather}{\bnu@set@math@lineskip}
+\AtBeginEnvironment{gather*}{\bnu@set@math@lineskip}
+\AtBeginEnvironment{multline}{\bnu@set@math@lineskip}
+\AtBeginEnvironment{multline*}{\bnu@set@math@lineskip}
+\AtBeginEnvironment{aligned}{\bnu@set@math@lineskip}
+\AtBeginEnvironment{alignedat}{\bnu@set@math@lineskip}
+\AtBeginEnvironment{gathered}{\bnu@set@math@lineskip}
+\AtBeginEnvironment{split}{\bnu@set@math@lineskip}
 %    \end{macrocode}
 %
 % 公式距前后文的距离由 4 个参数控制，参见 \cs{normalsize} 的定义。
@@ -3486,18 +3545,22 @@
 %
 % 定制浮动图形和表格标题样式，以及改变附录中浮动体的编号规则：
 % \begin{itemize}
-%   \item 图表标题字体为 11pt
+%   \item 中文硕博图表标题为宋体五号、单倍行距；其他论文保留原字号
 %   \item 去掉图表号后面的冒号，图序与图名文字之间空一个汉字符宽度
 %   \item 图：caption 在下，段前空 6 磅，段后空 12 磅
-%   \item 表：caption 在上，段前空 12 磅，段后空 6 磅
+%   \item 表：caption 在上，中文硕博段前、段后均空 6 磅
 % \end{itemize}
 %    \begin{macrocode}
 \DeclareCaptionFont{bnu}{%
-  \ifbnu@degree@bachelor
-    \fontsize{11bp}{15bp}\selectfont
-  \else
-    \fontsize{11bp}{14.3bp}\selectfont
-  \fi
+  \bnu@if@graduate@chinese{%
+    \songti\fontsize{10.5bp}{13.65bp}\selectfont
+  }{%
+    \ifbnu@degree@bachelor
+      \fontsize{11bp}{15bp}\selectfont
+    \else
+      \fontsize{11bp}{14.3bp}\selectfont
+    \fi
+  }%
 }
 \captionsetup{
   font           = bnu,
@@ -3508,6 +3571,12 @@
   tableposition  = top,
 }
 \captionsetup[sub]{font=bnu}
+\AtBeginDocument{%
+  \bnu@if@graduate@chinese{%
+    \captionsetup*[figure]{aboveskip=6bp,belowskip=12bp}%
+    \captionsetup*[table]{aboveskip=6bp,belowskip=6bp}%
+  }{}%
+}
 \renewcommand{\thesubfigure}{(\alph{subfigure})}
 \renewcommand{\thesubtable}{(\alph{subtable})}
 \DeclareCaptionLabelFormat{nosep}{#1#2}
@@ -3636,23 +3705,23 @@
 %   \item 各章标题，例如：“\textsf{第 1 章 引言}”。
 %
 %     章序号与章名之间空一个汉字符。
-%     采用黑体三号字，居中书写，，行距为固定值 20 pt，
+%     中文硕博采用黑体三号加粗，居中书写，单倍行距，
 %     段前空 24 磅，段后空 18 磅。
 %
 %   \item 一级节标题，例如：“\textsf{2.1 实验装置与实验方法}”。
 %
 %     节标题序号与标题名之间空半个汉字符（下同）。
-%     采用黑体四号（14pt）字居左书写，行距为固定值 20 pt，
+%     中文硕博采用黑体小三号字居左书写，单倍行距，
 %     段前空 24 磅，段后空 6 磅。
 %
 %   \item 二级节标题，例如：“\textsf{2.1.1 实验装置}”。
 %
-%     采用黑体 13pt 字居左书写，行距为固定值 20 pt，
+%     中文硕博采用黑体四号字居左书写，单倍行距，
 %     段前空 12 磅，段后空 6 磅。
 %
 %   \item 三级节标题，例如：“\textsf{2.1.2.1 归纳法}”。
 %
-%     采用黑体小四号（12pt）字居左书写，行距为固定值 20 pt，
+%     中文硕博采用黑体小四号字居左书写，单倍行距，
 %     段前空 12 磅，段后空 6 磅。
 % \end{itemize}
 %
@@ -3719,6 +3788,28 @@
       },
     }%
   \fi
+  \bnu@if@graduate@chinese{%
+    \ctexset{%
+      chapter = {
+        format = \centering\heiti\bfseries\fontsize{16bp}{20.8bp}\selectfont,
+        numberformat = \bnu@if@graduate@chinese{\rmfamily}{},
+        beforeskip = 24bp,
+        afterskip = 18bp,
+      },
+      section = {
+        format = \heiti\fontsize{15bp}{19.5bp}\selectfont,
+        numberformat = \bnu@if@graduate@chinese{\rmfamily}{},
+      },
+      subsection = {
+        format = \heiti\fontsize{14bp}{18.2bp}\selectfont,
+        numberformat = \bnu@if@graduate@chinese{\rmfamily}{},
+      },
+      subsubsection = {
+        format = \heiti\fontsize{12bp}{15.6bp}\selectfont,
+        numberformat = \bnu@if@graduate@chinese{\rmfamily}{},
+      },
+    }%
+  }{}%
 }
 \bnu@set@section@format
 \bnu@option@hook{degree}{\bnu@set@section@format}
@@ -3816,14 +3907,27 @@
 \renewcommand\tableofcontents{%
   \let\@evenheadbackup\@evenhead
   \let\@oddheadbackup\@oddhead
-  \ifbnu@degree@graduate
-    \bnu@chapter*{\contentsname}%
-    \let\@evenhead\@empty%
-    \let\@oddhead\@empty%
-  \else
-    \bnu@chapter*[]{\contentsname}%
-  \fi
-  \@starttoc{toc}%
+  \bnu@if@graduate@chinese{%
+    \begingroup
+      \ctexset{chapter={%
+        format=\centering\heiti\fontsize{18bp}{23.4bp}\selectfont,
+        beforeskip=24bp,afterskip=18bp,
+      }}%
+      \bnu@chapter*[]{\contentsname}%
+      \songti\fontsize{12bp}{18bp}\selectfont
+      \@starttoc{toc}%
+      \par
+    \endgroup
+  }{%
+    \ifbnu@degree@graduate
+      \bnu@chapter*{\contentsname}%
+      \let\@evenhead\@empty%
+      \let\@oddhead\@empty%
+    \else
+      \bnu@chapter*[]{\contentsname}%
+    \fi
+    \@starttoc{toc}%
+  }%
   \clearpage
   \let\@evenhead\@evenheadbackup
   \let\@oddhead\@oddheadbackup
@@ -3901,8 +4005,8 @@
 %
 % 研究生：
 % \begin{enumerate}
-%   \item 目录中的章标题行采用黑体小四号字，固定行距 20 磅，段前空 6 磅，
-%     段后 0 磅；其他内容采用宋体小四号字，行距为固定值 20 磅，
+%   \item 中文硕博目录章标题行采用宋体小四号加粗，固定行距 18 磅；
+%     其他内容采用宋体小四号字，行距为固定值 18 磅，
 %     段前、段后均为 0 磅。
 %   \item 目录中的章标题行居左书写，一级节标题行缩进 1 个汉字符，
 %     二级节标题行缩进 2 个汉字符，三级节标题行缩进 3 个汉字符。
@@ -3954,6 +4058,24 @@
         {\bnu@leaders\thecontentspage}%
     \fi
   \fi
+  \bnu@if@graduate@chinese{%
+    \titlecontents{chapter}
+      [\z@]{\songti\bfseries\fontsize{12bp}{18bp}\selectfont}
+      {\contentspush{\thecontentslabel\quad}}{}
+      {\rmfamily\bnu@leaders\thecontentspage}%
+    \titlecontents{section}
+      [1em]{\songti\fontsize{12bp}{18bp}\selectfont}
+      {\contentspush{\thecontentslabel\hspace{0.5em}}}{}
+      {\bnu@leaders\thecontentspage}%
+    \titlecontents{subsection}
+      [2em]{\songti\fontsize{12bp}{18bp}\selectfont}
+      {\contentspush{\thecontentslabel\hspace{0.5em}}}{}
+      {\bnu@leaders\thecontentspage}%
+    \titlecontents{subsubsection}
+      [3em]{\songti\fontsize{12bp}{18bp}\selectfont}
+      {\contentspush{\thecontentslabel\hspace{0.5em}}}{}
+      {\bnu@leaders\thecontentspage}%
+  }{}%
 }
 \bnu@set@toc@format
 \bnu@option@hook{degree}{\bnu@set@toc@format}
@@ -4290,6 +4412,7 @@
     \vskip 94.105bp%
     \begingroup
       \bfseries\heiti\xiaoer
+      \bnu@if@graduate@chinese{\fontsize{18bp}{22.5bp}\selectfont}{}%
       \parindent=0bp%
       论文题目：
       \bnu@title\par
@@ -4305,6 +4428,7 @@
     \vfill
     \parbox[t][9.776cm][t]{\textwidth}{%
       \centering\bfseries\songti\xiaosan
+      \bnu@if@graduate@chinese{\fontsize{14bp}{18.2bp}\selectfont}{}%
       \bnu@titlepage@info
     }\par
   \endgroup
@@ -4429,7 +4553,7 @@
 }
 %    \end{macrocode}
 %
-% 作者及导师信息题目使用小三号宋体加粗字
+% 中文硕博题名页信息使用四号宋体加粗字，其他论文保留原格式。
 %    \begin{macrocode}
 \newcommand\bnu@titlepage@info{%
   \def\bnu@name@title@format##1##2{%
@@ -4451,7 +4575,8 @@
     \bnu@info@item{培养单位}{}{\bnu@department}%
     \bnu@info@item{学号}{}{\bnu@student@id}%
     \bnu@info@item{学科专业}{}{\bnu@discipline}%
-    \bnu@info@item{完成日期}{}{\bnu@format@date{\bnu@date@zh@digit}{\bnu@date}}
+    \bnu@info@item{\bnu@if@graduate@chinese{提交日期}{完成日期}}{}%
+      {\bnu@format@date{\bnu@date@zh@digit}{\bnu@date}}%
   }\par
 }
 %    \end{macrocode}
@@ -4786,11 +4911,15 @@
 % \subsubsection{答辩委员会名单}
 % \begin{environment}{committee}
 % 学位论文指导小组、公开评阅人和答辩委员会名单。
+% 中文硕博默认只另起页，显式指定 \texttt{openright} 时仍从奇数页开始。
 %    \begin{macrocode}
 \def\bnu@committee@name{学位论文指导小组、公开评阅人和答辩委员会名单}
 \newenvironment{committee}[1][]{%
-  \cleardoublepage
+  \bnu@if@graduate@chinese{%
+    \if@openright\cleardoublepage\else\clearpage\fi
+  }{\cleardoublepage}%
   \let\bnu@committee@file\@empty
+  \bnu@if@graduate@chinese{\def\bnu@committee@name{答辩委员会名单}}{}%
   \kv@define@key{bnu@committee}{name}{\let\bnu@committee@name\kv@value}%
   \kv@define@key{bnu@committee}{file}{\let\bnu@committee@file\kv@value}%
   \kv@set@family@handler{bnu@committee}{%
@@ -4806,13 +4935,30 @@
       \ifbnu@main@language@english
         \ctexset{chapter/format=\centering\sffamily\fontsize{16bp}{20bp}\selectfont}
       \fi
-      \bnu@chapter*[]{\bnu@committee@name}%
+      \bnu@if@graduate@chinese
+        {\bnu@chapter*{\bnu@committee@name}}%
+        {\bnu@chapter*[]{\bnu@committee@name}}%
     \endgroup
   \else
-    \bnu@pdfbookmark{0}{\bnu@committee@name}%
-    \includepdf{\bnu@committee@file}%
+    \bnu@if@graduate@chinese{%
+      \markboth{\bnu@committee@name}{}%
+      \begingroup
+        \@mainmatterfalse
+        \includepdf[
+          addtotoc={1,chapter,0,\bnu@committee@name,bnu.committee},
+          pagecommand={\thispagestyle{plain}},
+        ]{\bnu@committee@file}%
+      \endgroup
+    }{%
+      \bnu@pdfbookmark{0}{\bnu@committee@name}%
+      \includepdf{\bnu@committee@file}%
+    }%
   \fi
-  \thispagestyle{empty}%
+  \bnu@if@graduate@chinese{%
+    \thispagestyle{plain}%
+    \songti\fontsize{12bp}{20bp}\selectfont
+    \setlength\parskip{0bp}%
+  }{\thispagestyle{empty}}%
   \ctexset{
     section = {
       format    += {\centering},
@@ -4889,9 +5035,14 @@
     学位论文作者签名：\hfill 日期：\hspace*{3em}年\hspace*{2em}月\hspace*{2em}日\hspace*{2em}%
     \par
   \endgroup
-  \null\par
-  \null\par
-  \null\par
+  \bnu@if@graduate@chinese{%
+    % 上下页边距相同，版心中点即纸张中线；授权书由此开始。
+    \vskip\dimexpr 0.5\textheight-\pagetotal\relax
+  }{%
+    \null\par
+    \null\par
+    \null\par
+  }%
   \begingroup
     \ctexset{
       chapter = {
@@ -4917,7 +5068,6 @@
   \endgroup
   \thispagestyle{empty}%
   \clearpage
-  \restoregeometry
 }
 \newcommand\bnu@copyright@page@bachelor{%
   \begingroup
@@ -5007,8 +5157,10 @@
 %    \begin{macrocode}
 \newenvironment{abstract}{%
   \bnusetup{language = chinese}%
-  \renewcommand\headrulewidth{0pt}%
-  \fancyhead[C]{}%
+  \bnu@if@graduate@chinese{}{%
+    \renewcommand\headrulewidth{0pt}%
+    \fancyhead[C]{}%
+  }%
   \ifbnu@degree@graduate
     \clearpage
     \begingroup
@@ -5025,9 +5177,12 @@
           chapter/format = \centering\sffamily\fontsize{16bp}{20bp}\selectfont,
         }%
       \fi
-      \bnu@chapter{\bnu@abstract@name}%
+      \bnu@if@graduate@chinese
+        {\bnu@chapter[]{\bnu@abstract@name}[摘要]}%
+        {\bnu@chapter{\bnu@abstract@name}}%
     \endgroup
-    \xiaosi[2.09]
+    \bnu@if@graduate@chinese
+      {\normalfont\songti\fontsize{12bp}{20bp}\selectfont}{\xiaosi[2.09]}%
   \else
     \ifbnu@degree@bachelor
       \clearpage
@@ -5050,7 +5205,7 @@
 }{%
 %    \end{macrocode}
 %
-% 每个关键词之间空分号，且为悬挂缩进。
+% 中文硕博关键词用逗号分隔；其他学位保留原分隔方式。
 %    \begin{macrocode}
   \par
   \null\par
@@ -5082,29 +5237,39 @@
 % \end{environment}
 %
 % \begin{environment}{abstract*}
-% 研究生英文摘要部分的论文题目为 Times New Roman 三号字，左右两边至少留五个字符空格，标题为 \textbf{ABSTRACT}，用 Times New Roman 加粗小三号字。
+% 中文硕博英文摘要题目三号大写，左右两边至少留五个字符空格；
+% 标题 \textbf{ABSTRACT} 为四号加粗，摘要正文小四号、固定行距 20 磅。
 % 摘要内容用小四号 Times New Roman。
 %    \begin{macrocode}
 \newenvironment{abstract*}{%
   \bnusetup{language = english}%
-  \renewcommand\headrulewidth{0pt}%
-  \fancyhead[C]{}%
+  \bnu@if@graduate@chinese{}{%
+    \renewcommand\headrulewidth{0pt}%
+    \fancyhead[C]{}%
+  }%
   \ifbnu@degree@graduate
     \clearpage
     \centerline{%
       \begin{minipage}[c]{\textwidth - 10ex}
-        \centering\bfseries\sanhao\bnu@title@en\par%
+        \bnu@if@graduate@chinese{%
+          \centering\normalfont\fontsize{16bp}{20.8bp}\selectfont
+          \MakeUppercase{\bnu@title@en}\par
+        }{\centering\bfseries\sanhao\bnu@title@en\par}%
       \end{minipage}
     }%
     \ctexset{%
       chapter = {
         break   = {},
-        format  = {\centering\bfseries\xiaosan},
+        format  = {\centering\bfseries\bnu@if@graduate@chinese
+          {\fontsize{14bp}{18.2bp}\selectfont}{\xiaosan}},
         afterskip  = 35.6bp,
       }
     }%
-    \bnu@chapter{\bnu@abstract@name@en}%
-    \xiaosi[2.09]%
+    \bnu@if@graduate@chinese
+      {\bnu@chapter[]{\bnu@abstract@name@en}}%
+      {\bnu@chapter{\bnu@abstract@name@en}}%
+    \bnu@if@graduate@chinese
+      {\normalfont\fontsize{12bp}{20bp}\selectfont}{\xiaosi[2.09]}%
     \ctexset{autoindent=4ex}%
   \else
     \ifbnu@degree@bachelor
@@ -5173,12 +5338,18 @@
   \ifbnu@degree@bachelor
     \cleardoublepage
   \fi
-  \ifbnu@degree@graduate
-    \bnu@chapter*{\bnu@denotation@name}%
-  \else
+  \bnu@if@graduate@chinese{%
     \bnu@chapter*[]{\bnu@denotation@name}%
-  \fi
-  \vskip-30bp\xiaosi[1.6]\begin{bnu@denotation}[labelwidth=#1]
+    \normalfont\songti\fontsize{12bp}{20bp}\selectfont
+  }{%
+    \ifbnu@degree@graduate
+      \bnu@chapter*{\bnu@denotation@name}%
+    \else
+      \bnu@chapter*[]{\bnu@denotation@name}%
+    \fi
+    \vskip-30bp\xiaosi[1.6]%
+  }%
+  \begin{bnu@denotation}[labelwidth=#1]
 }{%
   \end{bnu@denotation}
 }
@@ -5237,7 +5408,7 @@
       \hfill
       {%
         \sihao
-        \begin{minipage}{5.17em}
+        \begin{minipage}{\bnu@if@graduate@chinese{8em}{5.17em}}
           \centering
           \heiti\sihao
           \bnu@author\\
@@ -5366,10 +5537,16 @@
 % 定义图表以及公式目录样式。
 %    \begin{macrocode}
 \def\bnu@listof#1{% #1: float type
-  \setcounter{tocdepth}{2} % restore tocdepth in case being modified
-  \@ifstar
-    {\bnu@chapter*[]{\csname list#1name\endcsname}\@starttoc{\csname ext@#1\endcsname}}
-    {\bnu@chapter*{\csname list#1name\endcsname}\@starttoc{\csname ext@#1\endcsname}}%
+  \bnu@if@graduate@chinese{%
+    \@ifstar
+      {\bnu@chapter*[]{\csname list#1name\endcsname}\@starttoc{\csname ext@#1\endcsname}}%
+      {\bnu@chapter*[]{\csname list#1name\endcsname}\@starttoc{\csname ext@#1\endcsname}}%
+  }{%
+    \setcounter{tocdepth}{2} % restore tocdepth in case being modified
+    \@ifstar
+      {\bnu@chapter*[]{\csname list#1name\endcsname}\@starttoc{\csname ext@#1\endcsname}}%
+      {\bnu@chapter*{\csname list#1name\endcsname}\@starttoc{\csname ext@#1\endcsname}}%
+  }%
 }
 %    \end{macrocode}
 %
@@ -5380,10 +5557,12 @@
 \renewcommand\listoffigures{%
   \let\@evenheadbackup\@evenhead
   \let\@oddheadbackup\@oddhead
-  \ifbnu@degree@graduate
-    \let\@evenhead\@empty%
-    \let\@oddhead\@empty%
-  \fi
+  \bnu@if@graduate@chinese{}{%
+    \ifbnu@degree@graduate
+      \let\@evenhead\@empty%
+      \let\@oddhead\@empty%
+    \fi
+  }%
   \bnu@listof{figure}%
   \clearpage
   \let\@evenhead\@evenheadbackup
@@ -5404,10 +5583,12 @@
 \renewcommand\listoftables{%
   \let\@evenheadbackup\@evenhead
   \let\@oddheadbackup\@oddhead
-  \ifbnu@degree@graduate
-    \let\@evenhead\@empty%
-    \let\@oddhead\@empty%
-  \fi
+  \bnu@if@graduate@chinese{}{%
+    \ifbnu@degree@graduate
+      \let\@evenhead\@empty%
+      \let\@oddhead\@empty%
+    \fi
+  }%
   \bnu@listof{table}%
   \clearpage
   \let\@evenhead\@evenheadbackup
@@ -5427,11 +5608,15 @@
 \newcommand\listoffiguresandtables{%
   \let\@evenheadbackup\@evenhead
   \let\@oddheadbackup\@oddhead
-  \ifbnu@degree@graduate
-    \let\@evenhead\@empty%
-    \let\@oddhead\@empty%
-  \fi
-  \bnu@chapter*{\bnu@list@figure@table@name}%
+  \bnu@if@graduate@chinese{%
+    \bnu@chapter*[]{\bnu@list@figure@table@name}%
+  }{%
+    \ifbnu@degree@graduate
+      \let\@evenhead\@empty%
+      \let\@oddhead\@empty%
+    \fi
+    \bnu@chapter*{\bnu@list@figure@table@name}%
+  }%
   \@starttoc{lof}%
   \par
   \null\par
@@ -5789,6 +5974,10 @@
       \setlength{\bibsep}{3bp \@plus 3bp \@minus 3bp}%
       \setlength{\bibhang}{21bp}%
     \fi
+    \bnu@if@graduate@chinese{%
+      \renewcommand\bibfont{\songti\fontsize{10.5bp}{16bp}\selectfont}%
+      \setlength{\bibsep}{0bp}%
+    }{}%
   }
   \bnu@set@bibliography@format
   \bnu@option@hook{degree}{\bnu@set@bibliography@format}
@@ -5864,6 +6053,10 @@
       \setlength{\biblabelsep}{0.1cm}%
       \setlength{\bibhang}{21bp}%
     \fi
+    \bnu@if@graduate@chinese{%
+      \renewcommand\bibfont{\songti\fontsize{10.5bp}{16bp}\selectfont}%
+      \setlength{\bibitemsep}{0bp}%
+    }{}%
   }
   \bnu@set@bibliography@format
   \bnu@option@hook{degree}{\bnu@set@bibliography@format}
@@ -5908,11 +6101,7 @@
 }
 %    \end{macrocode}
 %
-% 研究生和本科生的写作指南均未规定附录的节标题是否加入目录，
-% 但是从示例来看，目录中只出现附录的 chapter 标题，
-% 不出现附录中的 section 及 subsection 的标题。
-% 部分院系（例如自动化系）的格式审查的老师甚至一致口头如此要求。
-% （\href{https://github.com/tuna/thuthesis/pull/425}{\#425}）
+% 中文硕博附录沿用正文的目录层级；其他学位、语言保留原先仅列章标题的行为。
 %    \begin{macrocode}
 \bnu@define@key{
   toc-depth = {
@@ -5936,9 +6125,7 @@
   \addtocontents{loe}{\string\let\string\contentsline\string\ttl@gobblecontents}
 }
 \g@addto@macro\appendix{%
-  \bnusetup{
-    toc-depth = 0,
-  }%
+  \bnu@if@graduate@chinese{}{\bnusetup{toc-depth = 0}}%
 }
 \ifbnu@degree@bachelor
   \g@addto@macro\appendix{%
@@ -5969,6 +6156,14 @@
   \g@addto@macro\appendix{%
     \setcounter{figure}{0}
     \setcounter{table}{0}
+    \bnu@if@graduate@chinese{%
+      \ctexset{chapter/name={\appendixname\space,}}%
+      \@addtoreset{figure}{chapter}%
+      \@addtoreset{table}{chapter}%
+      \renewcommand\thefigure{\thechapter\arabic{figure}}%
+      \renewcommand\thetable{\thechapter\arabic{table}}%
+      \renewcommand\theequation{\thechapter\arabic{equation}}%
+    }{}%
   }
 \fi
 %    \end{macrocode}
@@ -6147,15 +6342,19 @@
   label      = [\arabic*],
   align      = left,
   leftmargin = 10mm,
-  topsep     = 6bp,
+  topsep     = \bnu@if@graduate@chinese{0bp}{6bp},
   parsep     = 0bp,
   partopsep  = 0bp,
-  itemsep    = 6bp,
+  itemsep    = \bnu@if@graduate@chinese{0bp}{6bp},
   labelsep   = !,
   before     = {
-    \ifbnu@degree@graduate
-      \fontsize{12bp}{16bp}\selectfont
-    \fi
+    \bnu@if@graduate@chinese{%
+      \songti\fontsize{10.5bp}{16bp}\selectfont
+    }{%
+      \ifbnu@degree@graduate
+        \fontsize{12bp}{16bp}\selectfont
+      \fi
+    }%
   },
   resume     = achievements,
 }
@@ -6495,13 +6694,15 @@
 %   书脊上方写论文题目，下方写本科生姓名，距上下页边均为 3cm。
 %
 % 研究生：
-%   硕士学位论文可不打印书脊，博士学位论文自 2007 年起要求打印书脊。
-%   示例中上下页边距为 5.5 cm，左右边距为 1 cm。
+%   硕士学位论文可不打印书脊，博士学位论文要求打印书脊。
+%   中文硕博书脊黑体小四号，上下留白 3 cm，依次排题名、作者及校名。
+%   其他学位、语言保留原格式；已有书脊插页的位置和方式不变。
 %    \begin{macrocode}
 \bnu@define@key{
   spine-font = {
     name = spine@font,
-    default = {\sanhao},
+    default = {\bnu@if@graduate@chinese
+      {\fontsize{12bp}{15.6bp}\selectfont}{\sanhao}},
   },
   spine-title = {
     name = spine@title,
@@ -6538,9 +6739,10 @@
       hmargin = 1cm,
     }%
   \else
-    \newgeometry{
-      vmargin = 5.5cm,
-      hmargin = 1cm,
+    \bnu@if@graduate@chinese{%
+      \newgeometry{vmargin=3cm,hmargin=1cm}%
+    }{%
+      \newgeometry{vmargin=5.5cm,hmargin=1cm}%
     }%
   \fi
   \thispagestyle{empty}%
@@ -6553,12 +6755,13 @@
     \noindent\hfill
     \rotatebox[origin=lt]{-90}{%
       \makebox[\textheight]{%
-        \fangsong
+        \bnu@if@graduate@chinese{\heiti}{\fangsong}%
         \addCJKfontfeatures*{RawFeature={vertical}}%
         \bnu@spine@font
         \CJKmove
         #1\hfill
         \bnu@stretch{4.5em}{#2}%
+        \bnu@if@graduate@chinese{\hfill 北京师范大学}{}%
       }%
     }%
   \endgroup

@@ -1,0 +1,47 @@
+% !TeX root = ../bnuthesis-example.tex
+
+% 索引为可选部分，放在附录之后、成果列表之前。
+% 不使用 \chapter{索引}，避免被编为“附录 C”。
+\chapter*{\indexname}
+\phantomsection
+\addcontentsline{toc}{chapter}{\indexname}
+\markboth{\indexname}{\indexname}
+
+\begingroup
+  \normalfont\songti\fontsize{12bp}{20bp}\selectfont
+  \setlength{\parindent}{2\ccwd}
+  \setlength{\parskip}{0bp}
+
+  本索引按汉语拼音字顺编排，示例收录正文和附录中的部分主题、概念与术语。
+  条目后的数字为相关内容所在页码；“见”表示同义词参照。
+
+  % 字母分组是本例采用的检索方式，并非学校要求的固定版式。
+  % 按实际论文内容增删条目并人工核对拼音排序，尤其注意多音字。
+  % 页码引用正文中已有的标签；新增条目时，在对应内容处设置 \label。
+  % 多个页码按升序列出，同页只保留一次；连续页可写 \pageref{起点}--\pageref{终点}。
+  \textbf{B}\par\nopagebreak[4]
+  表格，\pageref{tab:three-line}\par
+
+  \textbf{C}\par\nopagebreak[4]
+  插图，\pageref{fig:example}，\pageref{fig:multi-image}\par
+
+  \textbf{D}\par\nopagebreak[4]
+  带附注的表格，\pageref{tab:three-part-table}\par
+  定理，\pageref{eq:square-inequality}\par
+
+  \textbf{F}\par\nopagebreak[4]
+  分图，\pageref{fig:multi-image}\par
+  附录，\pageref{fig:appendix-figure}，\pageref{fig:appendix-b-figure}\par
+
+  \textbf{G}\par\nopagebreak[4]
+  公式，\pageref{eq:example}，\pageref{eq:appendix-equation}，\pageref{eq:appendix-b-equation}\par
+
+  \textbf{J}\par\nopagebreak[4]
+  积分，\pageref{eq:example}，\pageref{eq:appendix-equation}\par
+
+  \textbf{S}\par\nopagebreak[4]
+  三线表，\pageref{tab:three-line}\par
+
+  \textbf{T}\par\nopagebreak[4]
+  图片，见“插图”\par
+\endgroup

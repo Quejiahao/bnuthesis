@@ -11,7 +11,8 @@
   %******************************
   %
   % 输出格式
-  %   选择打印版（print）或用于提交的电子版（electronic），前者会插入空白页以便直接双面打印
+  %   选择打印版（print）或用于提交的电子版（electronic）。
+  %   正文每章另起页；2026 年规则未要求每章必须从奇数页开始。
   %
   output = print,
   %
@@ -36,7 +37,6 @@
   %      直接填写专业学位的名称，例如：
   %      教育博士、工程硕士等
   %      Doctor of Education, Master of Engineering
-  %   3. 本科生不需要填写
   %
   degree-name  = {理学博士},
   degree-name* = {Doctor of Science},
@@ -53,7 +53,6 @@
   %      工程领域名称
   %   3. 其他专业型学位
   %      不填写此项
-  %   4. 本科生填写专业名称，第二学位论文需标注“（第二学位）”
   %
   discipline  = {计算数学},
   discipline* = {Mathematics and Applied Mathematics (Liyun)},
@@ -92,7 +91,6 @@
   % 是否在中文封面后的空白页生成书脊（默认 false）
   %
   include-spine = true,
-  spine-author = {北京师范大学},
   %
   % 密级和年限
   %   秘密, 机密, 绝密
@@ -118,7 +116,9 @@
 % \usepackage[amsmath,thmmarks,hyperref]{ntheorem}
 
 \bnusetup{
-  %
+  % 西文使用 Times New Roman、Arial 和 Courier New；中文使用 Windows 中易字体
+  font = times,
+  cjk-font = windows,
   % 数学字体
   math-style = TeX,  % GB | ISO | TeX
   less-than-or-equal = slanted,
@@ -149,19 +149,16 @@
 % \usepackage[sort]{natbib}
 % \bibliographystyle{bnuthesis-numeric}
 
-% 著者-出版年制, 但引用标注的格式设为上标格式
-% 文中可临时使用 inline: \inlinecite{}
-% 或使用 \bnusetup{cite-style=author-year} 切换 author-year 或 inline 模式
+% 本例按已确认的例外保留：文献表按著者-出版年排序，正文用数字上标。
+% 该组合不属于规则列出的两种标准配套方案，正式提交前应向培养单位确认。
+% 中文著者排序依赖 .bib 条目中的拼音 key 字段，新增条目时应核对。
+% 正文演示不切换引文制度；其他配套方案见 data/chap04.tex 的代码说明。
 \usepackage{natbib}
 \bibliographystyle{bnuthesis-author-year-bnu}
 
 % 著者-出版年制
 % \usepackage{natbib}
 % \bibliographystyle{bnuthesis-author-year}
-
-% 本科生参考文献的著录格式
-% \usepackage[sort]{natbib}
-% \bibliographystyle{bnuthesis-bachelor}
 
 % 参考文献使用 BibLaTeX 宏包
 % \usepackage[backend=biber,style=bnuthesis-numeric]{biblatex}

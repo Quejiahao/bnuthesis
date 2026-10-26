@@ -8,22 +8,22 @@
 建议矢量图片使用 PDF 格式，比如数据可视化的绘图；
 照片应使用 JPG 格式；
 其他的栅格图应使用无损的 PNG 格式。
-注意，LaTeX 不支持 TIFF 格式；EPS 格式已经过时。
+TIFF 图片应先转换为合适的插图格式。使用 XeLaTeX 时，建议先将 EPS 转换为保留路径的 PDF，再核查图中文字、线条与颜色。
 
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.6\linewidth]{example-image-a.pdf}
   \caption{示例图片}
   \label{fig:example}
 \end{figure}
 
-若图或表中有附注，采用英文小写字母顺序编号，附注写在图或表的下方。
+本例图题置于图下方，图和表分别从 1 连续编号。图或表需要附注时，可采用英文小写字母区分标记，并在图表下方说明；这是本例的演示约定。
 % LaTeX 传统上一般将附注的内容同图表的标题写在一起，形成很长的一段文字。
 
 如果一个图由两个或两个以上分图组成时，各分图分别以 (a)、(b)、(c)...... 作为图序，并须有分图题。
 推荐使用 \pkg{subcaption} 宏包来处理， 比如图~\ref{fig:subfig-a} 和图~\ref{fig:subfig-b}。
 
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \subcaptionbox{分图 A\label{fig:subfig-a}}
     {\includegraphics[width=0.45\linewidth]{example-image-a.pdf}}
@@ -40,7 +40,7 @@
 表应具有自明性。为使表格简洁易读，尽可能采用三线表，如表~\ref{tab:three-line}。
 三条线可以使用 \pkg{booktabs} 宏包提供的命令生成。
 
-\begin{table}
+\begin{table}[htbp]
   \centering
   \caption{三线表示例}
   \begin{tabular}{ll}
@@ -58,9 +58,9 @@
 \end{table}
 
 表格如果有附注，尤其是需要在表格中进行标注时，可以使用 \pkg{threeparttable} 宏包。
-研究生要求使用英文小写字母 a、b、c……顺序编号，本科生使用圈码 ①、②、③……编号。
+本例采用英文小写字母 a、b、c 等作为表内附注标记，与正文按页编号的脚注区分。
 
-\begin{table}
+\begin{table}[htbp]
   \centering
   \begin{threeparttable}[c]
     \caption{带附注的表格示例}
@@ -86,7 +86,10 @@
 
 如某个表需要转页接排，可以使用 \pkg{longtable} 宏包，需要在随后的各页上重复表的编号。
 编号后跟表题（可省略）和“（续）”，置于表上方。续表均应重复表头。
+下表使用空白占位行演示跨页接排，不包含实验或调查数据。
 
+% 先输出前面的浮动表格，避免后面的非浮动长表先于表 2 出现。
+% \clearpage
 \begin{longtable}{cccc}
     \caption{跨页长表格的表题} \\
     \toprule

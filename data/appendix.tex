@@ -1,8 +1,9 @@
 % !TeX root = ../bnuthesis-example.tex
 
-\chapter{补充内容}
+\chapter{图表和公式的补充示例}
 
 附录是与论文内容密切相关、但编入正文又影响整篇论文编排的条理和逻辑性的资料，例如某些重要的数据表格、计算程序、统计表等，是论文主体的补充内容，可根据需要设置。
+本例设置两份附录，展示图、表、公式如何随附录重新编号，正文页码保持连续。
 
 
 \section{图表示例}
@@ -11,7 +12,7 @@
 
 附录中的图片示例（图~\ref{fig:appendix-figure}）。
 
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.6\linewidth]{example-image-a.pdf}
   \caption{附录中的图片示例}
@@ -23,7 +24,7 @@
 
 附录中的表格示例（表~\ref{tab:appendix-table}）。
 
-\begin{table}
+\begin{table}[htbp]
   \centering
   \caption{附录中的表格示例}
   \begin{tabular}{ll}
@@ -45,6 +46,39 @@
 
 附录中的数学公式示例（公式~\eqref{eq:appendix-equation}）。
 \begin{equation}
-  \frac{1}{2 \uppi \symup{i}} \int_\gamma f = \sum_{k=1}^m n(\gamma; a_k) \mathscr{R}(f; a_k)
+  \int_a^b f(x)\,\dif x = -\int_b^a f(x)\,\dif x.
   \label{eq:appendix-equation}
+\end{equation}
+其中，$f$ 是在端点 $a$ 和 $b$ 之间可积的函数。
+
+\chapter{第二份附录的独立编号}
+
+第二份附录用于核对图~\ref{fig:appendix-b-figure}、表~\ref{tab:appendix-b-table} 和式~\eqref{eq:appendix-b-equation} 的序号是否从 B1 开始，避免沿用第一份附录或正文的编号。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\linewidth]{example-image-b.pdf}
+  \caption{第二份附录的图片示例}
+  \label{fig:appendix-b-figure}
+\end{figure}
+
+\begin{table}[htbp]
+  \centering
+  \caption{附录编号检查项目}
+  \label{tab:appendix-b-table}
+  \begin{tabular}{ll}
+    \toprule
+    项目 & 检查内容 \\
+    \midrule
+    图与表 & 各附录分别从 1 开始 \\
+    公式 & 使用所属附录字母与序号 \\
+    页码 & 与正文及其他文后部分连续 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+对正整数 $n$，以 $k$ 为求和指标，有
+\begin{equation}
+  \sum_{k=1}^{n} k = \frac{n(n+1)}{2}.
+  \label{eq:appendix-b-equation}
 \end{equation}

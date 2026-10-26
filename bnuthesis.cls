@@ -23,7 +23,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \ProvidesClass{bnuthesis}
-[2023/03/30 0.0.5 Beijing Normal University Thesis Template]
+[2023/03/30 0.0.6 Beijing Normal University Thesis Template]
 \newcommand\bnu@error[1]{%
   \ClassError{bnuthesis}{#1}{}%
 }
@@ -56,7 +56,7 @@
 }
 \hyphenation{Bnu-Thesis}
 \def\bnuthesis{BnuThesis}
-\def\version{0.0.5}
+\def\version{0.0.6}
 \RequirePackage{kvdefinekeys}
 \RequirePackage{kvsetkeys}
 \RequirePackage{kvoptions}
@@ -300,6 +300,17 @@
 \bnu@option@hook{degree}{%
   \bnu@set@graduate
 }
+\newcommand\bnu@if@graduate@chinese{%
+  \ifbnu@degree@graduate
+    \ifbnu@main@language@chinese
+      \expandafter\expandafter\expandafter\@firstoftwo
+    \else
+      \expandafter\expandafter\expandafter\@secondoftwo
+    \fi
+  \else
+    \expandafter\@secondoftwo
+  \fi
+}
 \DeclareBoolOption[false]{openright}
 \DeclareComplementaryOption{openany}{openright}
 \DeclareBoolOption[true]{raggedbottom}
@@ -424,12 +435,18 @@
     \fi
   \else
     \ifbnu@degree@graduate
-      \geometry{
-        top        = 2.5cm,
-        bottom     = 2.0cm,
-        left       = 2.5cm,
-        right      = 2.0cm,
-        headheight = 0.5cm,
+      \bnu@if@graduate@chinese{%
+        \geometry{
+          top = 2.54cm, bottom = 2.54cm,
+          left = 3.17cm, right = 3.17cm,
+          headheight = 0.5cm,
+        }%
+      }{%
+        \geometry{
+          top = 2.5cm, bottom = 2.0cm,
+          left = 2.5cm, right = 2.0cm,
+          headheight = 0.5cm,
+        }%
       }%
     \else
       \geometry{
@@ -444,6 +461,15 @@
 \bnu@set@geometry
 \bnu@option@hook{degree}{\bnu@set@geometry}
 \bnu@option@hook{output}{\bnu@set@geometry}
+\bnu@option@hook{main-language}{%
+  \bnu@set@geometry
+  % 主语言在导言区切换后，fancyhdr 已缓存的宽度也须跟随版心恢复。
+  \@ifundefined{headwidth}{}{%
+    \ifdim\headwidth>\z@
+      \setlength\headwidth{\textwidth}%
+    \fi
+  }%
+}
 \bnusetup{main-language=\bnu@language}%
 \let\bnu@main@language\bnu@language
 \bnu@option@hook{language}{%
@@ -482,8 +508,8 @@
       \def\bnu@acknowledgements@name{致\quad 谢}%
       \ifbnu@degree@graduate
         \def\contentsname{目\quad 录}%
-        \def\bnu@denotation@name{符号和缩略语说明}%
-        \def\bnu@resume@name{学术成果}% 个人简历、在学期间完成的相关
+        \def\bnu@denotation@name{主要符号对照表}%
+        \def\bnu@resume@name{攻读学位期间取得的学位论文相关成果}%
       \else  % degree = postdoc
         \def\contentsname{目\qquad 次}%
         \def\bnu@denotation@name{符号表}%
@@ -1405,7 +1431,7 @@
     \clearpage
   \fi
   \@mainmatterfalse
-  \bnusetup{toc-depth = 0}%
+  \bnu@if@graduate@chinese{}{\bnusetup{toc-depth = 0}}%
 }
 \pagestyle{fancy}
 \fancypagestyle{plain}{%
@@ -1436,16 +1462,20 @@
     \fancyfoot[C]{\wuhao\thepage}%
     \let\@mkboth\markboth
     \def\chaptermark##1{%
-      \markboth{%
-        \CTEXifname{%
-          \CTEXthechapter
-          \ifbnu@main@language@chinese
-            \quad
-          \else
-            \space
-          \fi
-        }{}##1%
-      }{}%
+      \bnu@if@graduate@chinese{%
+        \markboth{##1}{}%
+      }{%
+        \markboth{%
+          \CTEXifname{%
+            \CTEXthechapter
+            \ifbnu@main@language@chinese
+              \quad
+            \else
+              \space
+            \fi
+          }{}##1%
+        }{}%
+      }%
     }%
   \fi
   \let\sectionmark\@gobble
@@ -1471,6 +1501,9 @@
 \bnu@set@indent
 \bnu@option@hook{degree}{\bnu@set@indent}
 \bnu@option@hook{main-language}{\bnu@set@indent}
+\AtBeginDocument{%
+  \bnu@if@graduate@chinese{\setlength\parskip{0bp}}{}%
+}
 \urlstyle{same}
 \g@addto@macro\UrlBreaks{%
   \do0\do1\do2\do3\do4\do5\do6\do7\do8\do9%
@@ -1519,6 +1552,10 @@
     % 序号取消上标
     \def\@makefnmark{\hbox{\normalfont\@thefnmark}}%
     \xiaowu
+    \bnu@if@graduate@chinese{%
+      \songti\fontsize{9bp}{11.7bp}\selectfont
+      \setlength\parskip{0bp}%
+    }{}%
     \ifFN@hangfoot
       \bgroup
       \setbox\@tempboxa\hbox{%
@@ -1534,7 +1571,8 @@
       \advance \linewidth -\leftmargin
       \parshape \@ne \leftmargin \linewidth
       % \footnotesize
-      \xiaowu
+      \bnu@if@graduate@chinese
+        {\songti\fontsize{9bp}{11.7bp}\selectfont}{\xiaowu}%
       \@setpar{{\@@par}}%
       \leavevmode
       \llap{\box\@tempboxa}%
@@ -1560,6 +1598,23 @@
   \endgroup
 }
 \allowdisplaybreaks[4]
+\newcommand\bnu@set@math@lineskip{%
+  \bnu@if@graduate@chinese{\setlength\jot{0.5\baselineskip}}{}%
+}
+\AtBeginEnvironment{align}{\bnu@set@math@lineskip}
+\AtBeginEnvironment{align*}{\bnu@set@math@lineskip}
+\AtBeginEnvironment{flalign}{\bnu@set@math@lineskip}
+\AtBeginEnvironment{flalign*}{\bnu@set@math@lineskip}
+\AtBeginEnvironment{alignat}{\bnu@set@math@lineskip}
+\AtBeginEnvironment{alignat*}{\bnu@set@math@lineskip}
+\AtBeginEnvironment{gather}{\bnu@set@math@lineskip}
+\AtBeginEnvironment{gather*}{\bnu@set@math@lineskip}
+\AtBeginEnvironment{multline}{\bnu@set@math@lineskip}
+\AtBeginEnvironment{multline*}{\bnu@set@math@lineskip}
+\AtBeginEnvironment{aligned}{\bnu@set@math@lineskip}
+\AtBeginEnvironment{alignedat}{\bnu@set@math@lineskip}
+\AtBeginEnvironment{gathered}{\bnu@set@math@lineskip}
+\AtBeginEnvironment{split}{\bnu@set@math@lineskip}
 \def\fps@figure{h}
 \def\fps@table{h}
 \setlength{\floatsep}{12\p@ \@plus 2\p@ \@minus 2\p@}
@@ -1652,11 +1707,15 @@
   }
 }
 \DeclareCaptionFont{bnu}{%
-  \ifbnu@degree@bachelor
-    \fontsize{11bp}{15bp}\selectfont
-  \else
-    \fontsize{11bp}{14.3bp}\selectfont
-  \fi
+  \bnu@if@graduate@chinese{%
+    \songti\fontsize{10.5bp}{13.65bp}\selectfont
+  }{%
+    \ifbnu@degree@bachelor
+      \fontsize{11bp}{15bp}\selectfont
+    \else
+      \fontsize{11bp}{14.3bp}\selectfont
+    \fi
+  }%
 }
 \captionsetup{
   font           = bnu,
@@ -1667,6 +1726,12 @@
   tableposition  = top,
 }
 \captionsetup[sub]{font=bnu}
+\AtBeginDocument{%
+  \bnu@if@graduate@chinese{%
+    \captionsetup*[figure]{aboveskip=6bp,belowskip=12bp}%
+    \captionsetup*[table]{aboveskip=6bp,belowskip=6bp}%
+  }{}%
+}
 \renewcommand{\thesubfigure}{(\alph{subfigure})}
 \renewcommand{\thesubtable}{(\alph{subtable})}
 \DeclareCaptionLabelFormat{nosep}{#1#2}
@@ -1812,6 +1877,28 @@
       },
     }%
   \fi
+  \bnu@if@graduate@chinese{%
+    \ctexset{%
+      chapter = {
+        format = \centering\heiti\bfseries\fontsize{16bp}{20.8bp}\selectfont,
+        numberformat = \bnu@if@graduate@chinese{\rmfamily}{},
+        beforeskip = 24bp,
+        afterskip = 18bp,
+      },
+      section = {
+        format = \heiti\fontsize{15bp}{19.5bp}\selectfont,
+        numberformat = \bnu@if@graduate@chinese{\rmfamily}{},
+      },
+      subsection = {
+        format = \heiti\fontsize{14bp}{18.2bp}\selectfont,
+        numberformat = \bnu@if@graduate@chinese{\rmfamily}{},
+      },
+      subsubsection = {
+        format = \heiti\fontsize{12bp}{15.6bp}\selectfont,
+        numberformat = \bnu@if@graduate@chinese{\rmfamily}{},
+      },
+    }%
+  }{}%
 }
 \bnu@set@section@format
 \bnu@option@hook{degree}{\bnu@set@section@format}
@@ -1878,14 +1965,27 @@
 \renewcommand\tableofcontents{%
   \let\@evenheadbackup\@evenhead
   \let\@oddheadbackup\@oddhead
-  \ifbnu@degree@graduate
-    \bnu@chapter*{\contentsname}%
-    \let\@evenhead\@empty%
-    \let\@oddhead\@empty%
-  \else
-    \bnu@chapter*[]{\contentsname}%
-  \fi
-  \@starttoc{toc}%
+  \bnu@if@graduate@chinese{%
+    \begingroup
+      \ctexset{chapter={%
+        format=\centering\heiti\fontsize{18bp}{23.4bp}\selectfont,
+        beforeskip=24bp,afterskip=18bp,
+      }}%
+      \bnu@chapter*[]{\contentsname}%
+      \songti\fontsize{12bp}{18bp}\selectfont
+      \@starttoc{toc}%
+      \par
+    \endgroup
+  }{%
+    \ifbnu@degree@graduate
+      \bnu@chapter*{\contentsname}%
+      \let\@evenhead\@empty%
+      \let\@oddhead\@empty%
+    \else
+      \bnu@chapter*[]{\contentsname}%
+    \fi
+    \@starttoc{toc}%
+  }%
   \clearpage
   \let\@evenhead\@evenheadbackup
   \let\@oddhead\@oddheadbackup
@@ -1986,6 +2086,24 @@
         {\bnu@leaders\thecontentspage}%
     \fi
   \fi
+  \bnu@if@graduate@chinese{%
+    \titlecontents{chapter}
+      [\z@]{\songti\bfseries\fontsize{12bp}{18bp}\selectfont}
+      {\contentspush{\thecontentslabel\quad}}{}
+      {\rmfamily\bnu@leaders\thecontentspage}%
+    \titlecontents{section}
+      [1em]{\songti\fontsize{12bp}{18bp}\selectfont}
+      {\contentspush{\thecontentslabel\hspace{0.5em}}}{}
+      {\bnu@leaders\thecontentspage}%
+    \titlecontents{subsection}
+      [2em]{\songti\fontsize{12bp}{18bp}\selectfont}
+      {\contentspush{\thecontentslabel\hspace{0.5em}}}{}
+      {\bnu@leaders\thecontentspage}%
+    \titlecontents{subsubsection}
+      [3em]{\songti\fontsize{12bp}{18bp}\selectfont}
+      {\contentspush{\thecontentslabel\hspace{0.5em}}}{}
+      {\bnu@leaders\thecontentspage}%
+  }{}%
 }
 \bnu@set@toc@format
 \bnu@option@hook{degree}{\bnu@set@toc@format}
@@ -2228,6 +2346,7 @@
     \vskip 94.105bp%
     \begingroup
       \bfseries\heiti\xiaoer
+      \bnu@if@graduate@chinese{\fontsize{18bp}{22.5bp}\selectfont}{}%
       \parindent=0bp%
       论文题目：
       \bnu@title\par
@@ -2243,6 +2362,7 @@
     \vfill
     \parbox[t][9.776cm][t]{\textwidth}{%
       \centering\bfseries\songti\xiaosan
+      \bnu@if@graduate@chinese{\fontsize{14bp}{18.2bp}\selectfont}{}%
       \bnu@titlepage@info
     }\par
   \endgroup
@@ -2369,7 +2489,8 @@
     \bnu@info@item{培养单位}{}{\bnu@department}%
     \bnu@info@item{学号}{}{\bnu@student@id}%
     \bnu@info@item{学科专业}{}{\bnu@discipline}%
-    \bnu@info@item{完成日期}{}{\bnu@format@date{\bnu@date@zh@digit}{\bnu@date}}
+    \bnu@info@item{\bnu@if@graduate@chinese{提交日期}{完成日期}}{}%
+      {\bnu@format@date{\bnu@date@zh@digit}{\bnu@date}}%
   }\par
 }
 \newcommand\bnu@titlepage@info@tabular[4]{%
@@ -2664,8 +2785,11 @@
 }
 \def\bnu@committee@name{学位论文指导小组、公开评阅人和答辩委员会名单}
 \newenvironment{committee}[1][]{%
-  \cleardoublepage
+  \bnu@if@graduate@chinese{%
+    \if@openright\cleardoublepage\else\clearpage\fi
+  }{\cleardoublepage}%
   \let\bnu@committee@file\@empty
+  \bnu@if@graduate@chinese{\def\bnu@committee@name{答辩委员会名单}}{}%
   \kv@define@key{bnu@committee}{name}{\let\bnu@committee@name\kv@value}%
   \kv@define@key{bnu@committee}{file}{\let\bnu@committee@file\kv@value}%
   \kv@set@family@handler{bnu@committee}{%
@@ -2681,13 +2805,30 @@
       \ifbnu@main@language@english
         \ctexset{chapter/format=\centering\sffamily\fontsize{16bp}{20bp}\selectfont}
       \fi
-      \bnu@chapter*[]{\bnu@committee@name}%
+      \bnu@if@graduate@chinese
+        {\bnu@chapter*{\bnu@committee@name}}%
+        {\bnu@chapter*[]{\bnu@committee@name}}%
     \endgroup
   \else
-    \bnu@pdfbookmark{0}{\bnu@committee@name}%
-    \includepdf{\bnu@committee@file}%
+    \bnu@if@graduate@chinese{%
+      \markboth{\bnu@committee@name}{}%
+      \begingroup
+        \@mainmatterfalse
+        \includepdf[
+          addtotoc={1,chapter,0,\bnu@committee@name,bnu.committee},
+          pagecommand={\thispagestyle{plain}},
+        ]{\bnu@committee@file}%
+      \endgroup
+    }{%
+      \bnu@pdfbookmark{0}{\bnu@committee@name}%
+      \includepdf{\bnu@committee@file}%
+    }%
   \fi
-  \thispagestyle{empty}%
+  \bnu@if@graduate@chinese{%
+    \thispagestyle{plain}%
+    \songti\fontsize{12bp}{20bp}\selectfont
+    \setlength\parskip{0bp}%
+  }{\thispagestyle{empty}}%
   \ctexset{
     section = {
       format    += {\centering},
@@ -2753,9 +2894,14 @@
     学位论文作者签名：\hfill 日期：\hspace*{3em}年\hspace*{2em}月\hspace*{2em}日\hspace*{2em}%
     \par
   \endgroup
-  \null\par
-  \null\par
-  \null\par
+  \bnu@if@graduate@chinese{%
+    % 上下页边距相同，版心中点即纸张中线；授权书由此开始。
+    \vskip\dimexpr 0.5\textheight-\pagetotal\relax
+  }{%
+    \null\par
+    \null\par
+    \null\par
+  }%
   \begingroup
     \ctexset{
       chapter = {
@@ -2781,7 +2927,6 @@
   \endgroup
   \thispagestyle{empty}%
   \clearpage
-  \restoregeometry
 }
 \newcommand\bnu@copyright@page@bachelor{%
   \begingroup
@@ -2852,8 +2997,10 @@
 }
 \newenvironment{abstract}{%
   \bnusetup{language = chinese}%
-  \renewcommand\headrulewidth{0pt}%
-  \fancyhead[C]{}%
+  \bnu@if@graduate@chinese{}{%
+    \renewcommand\headrulewidth{0pt}%
+    \fancyhead[C]{}%
+  }%
   \ifbnu@degree@graduate
     \clearpage
     \begingroup
@@ -2870,9 +3017,12 @@
           chapter/format = \centering\sffamily\fontsize{16bp}{20bp}\selectfont,
         }%
       \fi
-      \bnu@chapter{\bnu@abstract@name}%
+      \bnu@if@graduate@chinese
+        {\bnu@chapter[]{\bnu@abstract@name}[摘要]}%
+        {\bnu@chapter{\bnu@abstract@name}}%
     \endgroup
-    \xiaosi[2.09]
+    \bnu@if@graduate@chinese
+      {\normalfont\songti\fontsize{12bp}{20bp}\selectfont}{\xiaosi[2.09]}%
   \else
     \ifbnu@degree@bachelor
       \clearpage
@@ -2921,24 +3071,33 @@
 }
 \newenvironment{abstract*}{%
   \bnusetup{language = english}%
-  \renewcommand\headrulewidth{0pt}%
-  \fancyhead[C]{}%
+  \bnu@if@graduate@chinese{}{%
+    \renewcommand\headrulewidth{0pt}%
+    \fancyhead[C]{}%
+  }%
   \ifbnu@degree@graduate
     \clearpage
     \centerline{%
       \begin{minipage}[c]{\textwidth - 10ex}
-        \centering\bfseries\sanhao\bnu@title@en\par%
+        \bnu@if@graduate@chinese{%
+          \centering\normalfont\fontsize{16bp}{20.8bp}\selectfont
+          \MakeUppercase{\bnu@title@en}\par
+        }{\centering\bfseries\sanhao\bnu@title@en\par}%
       \end{minipage}
     }%
     \ctexset{%
       chapter = {
         break   = {},
-        format  = {\centering\bfseries\xiaosan},
+        format  = {\centering\bfseries\bnu@if@graduate@chinese
+          {\fontsize{14bp}{18.2bp}\selectfont}{\xiaosan}},
         afterskip  = 35.6bp,
       }
     }%
-    \bnu@chapter{\bnu@abstract@name@en}%
-    \xiaosi[2.09]%
+    \bnu@if@graduate@chinese
+      {\bnu@chapter[]{\bnu@abstract@name@en}}%
+      {\bnu@chapter{\bnu@abstract@name@en}}%
+    \bnu@if@graduate@chinese
+      {\normalfont\fontsize{12bp}{20bp}\selectfont}{\xiaosi[2.09]}%
     \ctexset{autoindent=4ex}%
   \else
     \ifbnu@degree@bachelor
@@ -2999,12 +3158,18 @@
   \ifbnu@degree@bachelor
     \cleardoublepage
   \fi
-  \ifbnu@degree@graduate
-    \bnu@chapter*{\bnu@denotation@name}%
-  \else
+  \bnu@if@graduate@chinese{%
     \bnu@chapter*[]{\bnu@denotation@name}%
-  \fi
-  \vskip-30bp\xiaosi[1.6]\begin{bnu@denotation}[labelwidth=#1]
+    \normalfont\songti\fontsize{12bp}{20bp}\selectfont
+  }{%
+    \ifbnu@degree@graduate
+      \bnu@chapter*{\bnu@denotation@name}%
+    \else
+      \bnu@chapter*[]{\bnu@denotation@name}%
+    \fi
+    \vskip-30bp\xiaosi[1.6]%
+  }%
+  \begin{bnu@denotation}[labelwidth=#1]
 }{%
   \end{bnu@denotation}
 }
@@ -3049,7 +3214,7 @@
       \hfill
       {%
         \sihao
-        \begin{minipage}{5.17em}
+        \begin{minipage}{\bnu@if@graduate@chinese{8em}{5.17em}}
           \centering
           \heiti\sihao
           \bnu@author\\
@@ -3161,18 +3326,26 @@
 \let\acknowledgement\acknowledgements
 \let\endacknowledgement\endacknowledgements
 \def\bnu@listof#1{% #1: float type
-  \setcounter{tocdepth}{2} % restore tocdepth in case being modified
-  \@ifstar
-    {\bnu@chapter*[]{\csname list#1name\endcsname}\@starttoc{\csname ext@#1\endcsname}}
-    {\bnu@chapter*{\csname list#1name\endcsname}\@starttoc{\csname ext@#1\endcsname}}%
+  \bnu@if@graduate@chinese{%
+    \@ifstar
+      {\bnu@chapter*[]{\csname list#1name\endcsname}\@starttoc{\csname ext@#1\endcsname}}%
+      {\bnu@chapter*[]{\csname list#1name\endcsname}\@starttoc{\csname ext@#1\endcsname}}%
+  }{%
+    \setcounter{tocdepth}{2} % restore tocdepth in case being modified
+    \@ifstar
+      {\bnu@chapter*[]{\csname list#1name\endcsname}\@starttoc{\csname ext@#1\endcsname}}%
+      {\bnu@chapter*{\csname list#1name\endcsname}\@starttoc{\csname ext@#1\endcsname}}%
+  }%
 }
 \renewcommand\listoffigures{%
   \let\@evenheadbackup\@evenhead
   \let\@oddheadbackup\@oddhead
-  \ifbnu@degree@graduate
-    \let\@evenhead\@empty%
-    \let\@oddhead\@empty%
-  \fi
+  \bnu@if@graduate@chinese{}{%
+    \ifbnu@degree@graduate
+      \let\@evenhead\@empty%
+      \let\@oddhead\@empty%
+    \fi
+  }%
   \bnu@listof{figure}%
   \clearpage
   \let\@evenhead\@evenheadbackup
@@ -3185,10 +3358,12 @@
 \renewcommand\listoftables{%
   \let\@evenheadbackup\@evenhead
   \let\@oddheadbackup\@oddhead
-  \ifbnu@degree@graduate
-    \let\@evenhead\@empty%
-    \let\@oddhead\@empty%
-  \fi
+  \bnu@if@graduate@chinese{}{%
+    \ifbnu@degree@graduate
+      \let\@evenhead\@empty%
+      \let\@oddhead\@empty%
+    \fi
+  }%
   \bnu@listof{table}%
   \clearpage
   \let\@evenhead\@evenheadbackup
@@ -3201,11 +3376,15 @@
 \newcommand\listoffiguresandtables{%
   \let\@evenheadbackup\@evenhead
   \let\@oddheadbackup\@oddhead
-  \ifbnu@degree@graduate
-    \let\@evenhead\@empty%
-    \let\@oddhead\@empty%
-  \fi
-  \bnu@chapter*{\bnu@list@figure@table@name}%
+  \bnu@if@graduate@chinese{%
+    \bnu@chapter*[]{\bnu@list@figure@table@name}%
+  }{%
+    \ifbnu@degree@graduate
+      \let\@evenhead\@empty%
+      \let\@oddhead\@empty%
+    \fi
+    \bnu@chapter*{\bnu@list@figure@table@name}%
+  }%
   \@starttoc{lof}%
   \par
   \null\par
@@ -3457,6 +3636,10 @@
       \setlength{\bibsep}{3bp \@plus 3bp \@minus 3bp}%
       \setlength{\bibhang}{21bp}%
     \fi
+    \bnu@if@graduate@chinese{%
+      \renewcommand\bibfont{\songti\fontsize{10.5bp}{16bp}\selectfont}%
+      \setlength{\bibsep}{0bp}%
+    }{}%
   }
   \bnu@set@bibliography@format
   \bnu@option@hook{degree}{\bnu@set@bibliography@format}
@@ -3515,6 +3698,10 @@
       \setlength{\biblabelsep}{0.1cm}%
       \setlength{\bibhang}{21bp}%
     \fi
+    \bnu@if@graduate@chinese{%
+      \renewcommand\bibfont{\songti\fontsize{10.5bp}{16bp}\selectfont}%
+      \setlength{\bibitemsep}{0bp}%
+    }{}%
   }
   \bnu@set@bibliography@format
   \bnu@option@hook{degree}{\bnu@set@bibliography@format}
@@ -3560,9 +3747,7 @@
   \addtocontents{loe}{\string\let\string\contentsline\string\ttl@gobblecontents}
 }
 \g@addto@macro\appendix{%
-  \bnusetup{
-    toc-depth = 0,
-  }%
+  \bnu@if@graduate@chinese{}{\bnusetup{toc-depth = 0}}%
 }
 \ifbnu@degree@bachelor
   \g@addto@macro\appendix{%
@@ -3593,6 +3778,14 @@
   \g@addto@macro\appendix{%
     \setcounter{figure}{0}
     \setcounter{table}{0}
+    \bnu@if@graduate@chinese{%
+      \ctexset{chapter/name={\appendixname\space,}}%
+      \@addtoreset{figure}{chapter}%
+      \@addtoreset{table}{chapter}%
+      \renewcommand\thefigure{\thechapter\arabic{figure}}%
+      \renewcommand\thetable{\thechapter\arabic{table}}%
+      \renewcommand\theequation{\thechapter\arabic{equation}}%
+    }{}%
   }
 \fi
 \newenvironment{survey}{%
@@ -3719,15 +3912,19 @@
   label      = [\arabic*],
   align      = left,
   leftmargin = 10mm,
-  topsep     = 6bp,
+  topsep     = \bnu@if@graduate@chinese{0bp}{6bp},
   parsep     = 0bp,
   partopsep  = 0bp,
-  itemsep    = 6bp,
+  itemsep    = \bnu@if@graduate@chinese{0bp}{6bp},
   labelsep   = !,
   before     = {
-    \ifbnu@degree@graduate
-      \fontsize{12bp}{16bp}\selectfont
-    \fi
+    \bnu@if@graduate@chinese{%
+      \songti\fontsize{10.5bp}{16bp}\selectfont
+    }{%
+      \ifbnu@degree@graduate
+        \fontsize{12bp}{16bp}\selectfont
+      \fi
+    }%
   },
   resume     = achievements,
 }
@@ -3969,7 +4166,8 @@
 \bnu@define@key{
   spine-font = {
     name = spine@font,
-    default = {\sanhao},
+    default = {\bnu@if@graduate@chinese
+      {\fontsize{12bp}{15.6bp}\selectfont}{\sanhao}},
   },
   spine-title = {
     name = spine@title,
@@ -4006,9 +4204,10 @@
       hmargin = 1cm,
     }%
   \else
-    \newgeometry{
-      vmargin = 5.5cm,
-      hmargin = 1cm,
+    \bnu@if@graduate@chinese{%
+      \newgeometry{vmargin=3cm,hmargin=1cm}%
+    }{%
+      \newgeometry{vmargin=5.5cm,hmargin=1cm}%
     }%
   \fi
   \thispagestyle{empty}%
@@ -4021,12 +4220,13 @@
     \noindent\hfill
     \rotatebox[origin=lt]{-90}{%
       \makebox[\textheight]{%
-        \fangsong
+        \bnu@if@graduate@chinese{\heiti}{\fangsong}%
         \addCJKfontfeatures*{RawFeature={vertical}}%
         \bnu@spine@font
         \CJKmove
         #1\hfill
         \bnu@stretch{4.5em}{#2}%
+        \bnu@if@graduate@chinese{\hfill 北京师范大学}{}%
       }%
     }%
   \endgroup

@@ -1,65 +1,51 @@
 % !TeX root = ../bnuthesis-example.tex
 
-\chapter{引用文献的标注}
+\chapter{文献引用}
 
-模板支持 BibTeX 和 BibLaTeX 两种方式处理参考文献。
-下文主要介绍 BibTeX 配合 \pkg{natbib} 宏包的主要使用方法。
+\section{引文与参考文献的一致性}
 
+2026 年编写规则要求引文标注与参考文献表采用 GB/T 7714-2015，在顺序编码制或著者--出版年制中选择一种，并保持全文一致。全部被引文献都应进入参考文献表，未引用的文献不应混入其中。
 
-\section{顺序编码制}
+本例按已确认的例外，保留 \file{bnuthesis-author-year-bnu.bst} 对文献表的著者排序，并用数字上标标注正文引用。这一组合需要培养单位认可，不能作为规则规定的标准配套方式。中文文献的著者排序依赖数据库中的拼音 \texttt{key} 字段，新增条目时须补充并核对该字段。
 
-在顺序编码制下，默认的 \cs{cite} 命令同 \cs{citep} 一样，序号置于方括号中，
-引文页码会放在括号外。
-统一处引用的连续序号会自动用短横线连接。
+\section{本例使用的引用方式}
 
-\bnusetup{
-  cite-style = super,
-}
-\begin{tabular}{l@{\quad$\Rightarrow$\quad}l}
-  \verb|\cite{zhangkun1994}|               & \cite{zhangkun1994}               \\
-  \verb|\citet{zhangkun1994}|              & \citet{zhangkun1994}              \\
-  \verb|\citep{zhangkun1994}|              & \citep{zhangkun1994}              \\
-  \verb|\cite[42]{zhangkun1994}|           & \cite[42]{zhangkun1994}           \\
-  \verb|\cite{zhangkun1994,zhukezhen1973}| & \cite{zhangkun1994,zhukezhen1973} \\
-\end{tabular}
+本例使用 BibTeX 与 \pkg{natbib}，全文保持相同的数字上标格式。例如，期刊论文\cite{zhangkun1994}、专著\cite{zhukezhen1973} 和学位论文\cite{zhengkaiqing1987} 可以分别引用。同一位置引用多篇文献时，将键写在同一命令内\cite{zhangkun1994,zhukezhen1973}。
 
+下面给出命令和排版结果的对应关系，各行均使用当前引用制度。
+\begin{center}
+  \begin{tabular}{ll}
+    \toprule
+    命令 & 结果 \\
+    \midrule
+    \verb|\cite{zhangkun1994}| & \cite{zhangkun1994} \\
+    \verb|\citet{zhangkun1994}|              & \citet{zhangkun1994}              \\
+    \verb|\citep{zhangkun1994}|              & \citep{zhangkun1994}              \\
+    \verb|\cite[42]{zhukezhen1973}| & \cite[42]{zhukezhen1973} \\
+    \verb|\cite{zhangkun1994,zhukezhen1973}| & \cite{zhangkun1994,zhukezhen1973} \\
+    \bottomrule
+  \end{tabular}
+\end{center}
 
-也可以取消上标格式，将数字序号作为文字的一部分。
-建议全文统一使用相同的格式。
+数据库中还保留了原有的其他文献条目，只有在正文中被引用的条目才输出到文献表。概率论专著\cite{peebles2001probability} 在此作为外文专著的著录示例，不表示本例进行了相应的研究。
 
-\bnusetup{
-  cite-style = inline,
-}
-\begin{tabular}{l@{\quad$\Rightarrow$\quad}l}
-  \verb|\cite{zhangkun1994}|               & \cite{zhangkun1994}               \\
-  \verb|\citet{zhangkun1994}|              & \citet{zhangkun1994}              \\
-  \verb|\citep{zhangkun1994}|              & \citep{zhangkun1994}              \\
-  \verb|\cite[42]{zhangkun1994}|           & \cite[42]{zhangkun1994}           \\
-  \verb|\cite{zhangkun1994,zhukezhen1973}| & \cite{zhangkun1994,zhukezhen1973} \\
-\end{tabular}
+\section{其他配套方式的代码说明}
 
+若采用标准顺序编码制，可在导言区选用数字文献表样式，按引用顺序著录。以下仅展示代码，不在本例正文中执行：
+\begin{verbatim}
+\usepackage[sort]{natbib}
+\bibliographystyle{bnuthesis-numeric}
+\end{verbatim}
 
+若采用标准著者--出版年制，应同时更换文献表样式和正文标注方式，并将中文文献按著者字顺和年份排列。以下也仅作代码说明：
+\begin{verbatim}
+\usepackage{natbib}
+\bibliographystyle{bnuthesis-author-year}
+\bnusetup{cite-style = author-year}
+\end{verbatim}
 
-\section{著者-出版年制}
+修改参考文献方案后，应完整运行 LaTeX、BibTeX 和后续 LaTeX 编译，检查是否有未解析的引用以及正文与文献表不对应的条目。
 
-著者-出版年制下的 \cs{cite} 跟 \cs{citet} 一样。
-
-\bnusetup{
-  cite-style = author-year,
-}
-\begin{tabular}{l@{~$\Rightarrow$~}l}
-  \verb|\cite{zhangkun1994}|                & \cite{zhangkun1994}                \\
-  \verb|\citet{zhangkun1994}|               & \citet{zhangkun1994}               \\
-  \verb|\citep{zhangkun1994}|               & \citep{zhangkun1994}               \\
-  \verb|\cite[42]{zhangkun1994}|            & \cite[42]{zhangkun1994}            \\
-  \verb|\citep{zhangkun1994,zhukezhen1973}| & \citep{zhangkun1994,zhukezhen1973} \\
-\end{tabular}
-
-\vskip 2ex
-\bnusetup{
-  cite-style = super,
-}
-注意，引文参考文献的每条都要在正文中标注
 \cite{zhangkun1994,zhukezhen1973,dupont1974bone,zhengkaiqing1987,%
   jiangxizhou1980,jianduju1994,merkt1995rotational,mellinger1996laser,%
   bixon1996dynamics,mahui1995,carlson1981two,taylor1983scanning,%
@@ -71,4 +57,4 @@
   weinstein1974pathogenic,hanjiren1985lun,dizhi1936dizhi,%
   tushuguan1957tushuguanxue,aaas1883science,fugang2000fengsha,%
   xiaoyu2001chubanye,oclc2000about,scitor2000project%
-}。
+}
