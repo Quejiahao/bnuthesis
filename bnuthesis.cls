@@ -23,7 +23,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \ProvidesClass{bnuthesis}
-[2023/03/30 0.0.6 Beijing Normal University Thesis Template]
+[2026/10/25 0.0.6 Beijing Normal University Thesis Template]
 \newcommand\bnu@error[1]{%
   \ClassError{bnuthesis}{#1}{}%
 }
@@ -2928,6 +2928,7 @@
     \null\par
     本人签名：\bnu@CJKunderline[10em]\relax\hfill
     日期：\bnu@CJKunderline[10em]\relax\hspace*{2em}\par%
+    \null\par
     导师签名：\bnu@CJKunderline[10em]\relax\hfill
     日期：\bnu@CJKunderline[10em]\relax\hspace*{2em}%
   \endgroup
