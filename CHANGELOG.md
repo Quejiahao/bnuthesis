@@ -1,10 +1,181 @@
 # Changelog
 
-此处记载了 ThuThesis 中所有值得留意的改动，格式参照 [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)。
+此处记载了 BnuThesis 中所有值得留意的改动，格式参照 [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)。
 
-点击版本号即可在 GitHub 上查看相邻版本间的代码变动。
+BnuThesis 的记录按 Git 提交日期整理；v7.2.1 及以下为继承的 ThuThesis 历史记录。
+
+点击日期或版本号即可在 GitHub 上查看对应的代码变动。
 
 ## [Unreleased]
+
+### Changed
+
+- 根据 Git 提交记录补齐 BnuThesis 的更新日志，保留 ThuThesis 历史记录。
+- 更新日志按提交日期整理，补充对应的代码比较链接。
+- 重新编译使用文档，同步更新日志内容。
+
+## [2026-10-28]
+
+### Changed
+
+- 更新模板日期为 2026-10-25。
+- 增加使用授权书中本人签名与导师签名之间的空行。
+
+## [2026-10-26]
+
+### Added
+
+- 新增内容索引示例，使用正文标签生成页码指引。
+- 补充 Windows 字体在 WSL 中的安装配置说明。
+
+### Changed
+
+- 按 2026 版编写规则更新中文硕士、博士论文格式。
+- 调整页边距、正文字号和行距，以及各级标题和目录的格式。
+- 更新题名页和书脊的字号及信息排版，将“完成日期”改为“提交日期”。
+- 调整中英文摘要、关键词、页眉和页码的格式。
+- 调整图表标题、公式和脚注的格式，附录图表和公式采用 A1、B1 这类编号。
+- 调整参考文献、学术成果及答辩委员会名单的格式。
+- 声明页与其他内页使用相同页边距，使用授权书从页面中线开始。
+- 论文和书脊共同使用 Windows 中文字体及 Times New Roman 等西文字体。
+- 更新摘要、正文、主要符号、附录、成果、致谢和委员会示例，分别列出插图清单和附表清单。
+- 补充格式取舍及中文参考文献使用 `key` 字段按拼音排序的说明。
+
+### Fixed
+
+- 修复重复选择同一中文字体预设时的 xeCJK 字体族重定义警告。
+- 修复 VS Code 编译配方的文件路径和扩展名处理，编译使用文档前先生成类文件。
+- 修复中文研究生论文在 `openany` 模式下委员会名单前多出空白页的问题。
+
+## [2026-10-25]
+
+### Changed
+
+- 更新研究生原创性声明和使用授权书的标题及文字。
+- 更新封面，改用黑色校名和黑色矢量校徽。
+
+### Fixed
+
+- 修正 Noto 宋体的字重配置，常规字重使用 Light，粗体使用 Bold。
+
+## [2024-03-25]
+
+### Changed
+
+- 将行内数字引用的附注放入引用括号内。
+- 更新使用文档。
+
+## [2023-04-10]
+
+### Changed
+
+- 示例使用 `bnuthesis-author-year-bnu` 参考文献样式，配合正文数字上标引用。
+
+## [2023-03-30]
+
+### Changed
+
+- 调整研究生中英文摘要的行距。
+
+## [2022-04-05]
+
+### Added
+
+- 新增 `bnuthesis-author-year-bnu` 参考文献样式，调整英文作者姓名和出版年份的格式，保留题名大小写。
+
+## [2022-02-24]
+
+### Changed
+
+- 完善研究生封面、声明及授权书的排版。
+- 研究生的“个人简历、在学期间完成的相关学术成果”改为“学术成果”。
+- 调整英文摘要题目和致谢落款的格式，更新书脊示例。
+
+## [2022-02-23]
+
+### Changed
+
+- 取消目录、声明及授权书、中英文摘要的页眉。
+
+## [2022-02-22]
+
+### Changed
+
+- 调整研究生封面和声明及授权书的格式。
+
+## [2022-02-20]
+
+### Changed
+
+- 研究生论文的图、表分别采用全文连续编号。
+
+## [2022-02-19]
+
+### Changed
+
+- 调整研究生英文摘要题目两侧的留白。
+
+## [2022-02-05]
+
+### Changed
+
+- 示例数学字体改用 New Computer Modern，数学符号采用 TeX 风格。
+
+## [2022-01-31]
+
+### Changed
+
+- 调整研究生论文的页边距、各级标题和目录的格式。
+- 更新中英文摘要的题目、标题、正文和关键词的格式。
+
+## [2022-01-30]
+
+### Added
+
+- 新增研究生校徽页及校名图片。
+- 示例增加算法环境及相关配置。
+
+### Changed
+
+- 调整研究生封面及声明页，示例启用书脊插页。
+
+## [2022-01-26]
+
+### Added
+
+- 新增 `include-titlepage-en` 选项，控制是否生成研究生英文封面。
+
+### Changed
+
+- 示例改用博士学位配置。
+- 调整研究生封面信息，更新原创性声明和论文使用授权说明。
+
+## [2021-05-13]
+
+### Changed
+
+- 中文标题使用 `\heiti` 替换 `\sffamily`。
+- 加深校徽颜色。
+
+## [2021-05-06]
+
+### Changed
+
+- 标题使用黑体加粗，西文字体使用 Times New Roman。
+- 调整目录格式，取消诚信承诺及使用授权页的页码。
+
+## [2021-04-18]
+
+### Changed
+
+- 调整“目录”标题的字间距。
+
+## [2021-03-30]
+
+### Added
+
+- 基于 ThuThesis v7.2.1，适配北京师范大学本科毕业论文格式。
+- 添加北京师范大学校名、校徽及论文示例。
 
 ## [v7.2.1] - 2021-03-21
 ### Added
@@ -674,7 +845,27 @@
 
 
 
-[Unreleased]: https://github.com/tuna/thuthesis/compare/v7.2.1...HEAD
+[Unreleased]: https://github.com/Quejiahao/bnuthesis/compare/f16695f...HEAD
+[2026-10-28]: https://github.com/Quejiahao/bnuthesis/compare/12335ec...f16695f
+[2026-10-26]: https://github.com/Quejiahao/bnuthesis/compare/6da49ef...12335ec
+[2026-10-25]: https://github.com/Quejiahao/bnuthesis/compare/d2abd23...6da49ef
+[2024-03-25]: https://github.com/Quejiahao/bnuthesis/compare/5ed80fe...d2abd23
+[2023-04-10]: https://github.com/Quejiahao/bnuthesis/compare/37aab89...5ed80fe
+[2023-03-30]: https://github.com/Quejiahao/bnuthesis/compare/d342578...37aab89
+[2022-04-05]: https://github.com/Quejiahao/bnuthesis/compare/fc58a0a...d342578
+[2022-02-24]: https://github.com/Quejiahao/bnuthesis/compare/2391629...fc58a0a
+[2022-02-23]: https://github.com/Quejiahao/bnuthesis/compare/e76b3ef...2391629
+[2022-02-22]: https://github.com/Quejiahao/bnuthesis/compare/5c25b4d...e76b3ef
+[2022-02-20]: https://github.com/Quejiahao/bnuthesis/compare/5595b3c...5c25b4d
+[2022-02-19]: https://github.com/Quejiahao/bnuthesis/compare/39557fa...5595b3c
+[2022-02-05]: https://github.com/Quejiahao/bnuthesis/compare/fcc0b2c...39557fa
+[2022-01-31]: https://github.com/Quejiahao/bnuthesis/compare/0c870e4...fcc0b2c
+[2022-01-30]: https://github.com/Quejiahao/bnuthesis/compare/525edf5...0c870e4
+[2022-01-26]: https://github.com/Quejiahao/bnuthesis/compare/5019455...525edf5
+[2021-05-13]: https://github.com/Quejiahao/bnuthesis/compare/f22b901...5019455
+[2021-05-06]: https://github.com/Quejiahao/bnuthesis/compare/caf3607...f22b901
+[2021-04-18]: https://github.com/Quejiahao/bnuthesis/compare/026b572...caf3607
+[2021-03-30]: https://github.com/Quejiahao/bnuthesis/commit/026b572
 [v7.2.1]:     https://github.com/tuna/thuthesis/compare/v7.2.0...v7.2.1
 [v7.2.0]:     https://github.com/tuna/thuthesis/compare/v7.1.0...v7.2.0
 [v7.1.0]:     https://github.com/tuna/thuthesis/compare/v7.0.0...v7.1.0
